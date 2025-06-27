@@ -22,15 +22,6 @@ STATUS_COLORS = {
     "perfect": "#64B5F6"  # Blau
 }
 
-STATUS_COLORS_DARK_BUTTON = {
-    "bad": "#C62828",      # Kräftiges Rot
-    "ok": "#FF8F00",       # Kräftiges Orange/Gelb
-    "good": "#2E7D32",     # Kräftiges Grün
-    "perfect": "#1565C0",  # Kräftiges Blau
-    "foreground": "#FFFFFF" # Textfarbe für alle dunklen Buttons
-}
-
-
 # Definiert die Intervalle (in Tagen) für das nächste Review basierend auf dem Status
 STATUS_INTERVALS = {
     "new": 0, "bad": 0, "ok": 1, "good": 3, "mastered": 7, "perfect": 30
@@ -169,7 +160,7 @@ class QuizFrame(BasePage):
         
         self.all_tasks = self.controller.data[subject_id]["sets"][set_id].get("tasks", [])
         
-        self._setup_styles()
+        # Die Stile müssen hier nicht mehr aufgerufen werden, da sie global in main.py gesetzt werden.
 
         if self.mode == 'sequential':
             self.task_queue = deque(self.all_tasks)
@@ -180,19 +171,6 @@ class QuizFrame(BasePage):
         
         self.add_nav_button("← Beenden & Speichern", self.finish_quiz)
         self.load_next_question()
-
-    def _setup_styles(self):
-        """Erstellt benutzerdefinierte Stile für die Feedback-Buttons."""
-        s = ttk.Style()
-        is_dark = self.controller.current_theme.get() == "dark"
-        
-        colors = constants.FEEDBACK_COLORS[self.controller.current_theme.get()]
-        fg_color = colors.get("foreground", None)
-
-        s.configure("Bad.TButton", background=colors['bad'], foreground=fg_color or utils.get_readable_text_color(colors['bad']), padding=6, relief="flat")
-        s.configure("OK.TButton", background=colors['ok'], foreground=fg_color or utils.get_readable_text_color(colors['ok']), padding=6, relief="flat")
-        s.configure("Good.TButton", background=colors['good'], foreground=fg_color or utils.get_readable_text_color(colors['good']), padding=6, relief="flat")
-        s.configure("Perfect.TButton", background=colors['perfect'], foreground=fg_color or utils.get_readable_text_color(colors['perfect']), padding=6, relief="flat")
         
     def _build_spaced_repetition_queue(self, session_size=None):
         """Erstellt eine priorisierte Warteschlange, berücksichtigt die Sitzungsgröße."""
@@ -323,7 +301,6 @@ class QuizFrame(BasePage):
         self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all"))
 
     def process_answer(self, quality):
-        # KORREKTUR: Speichern des Fortschritts wird jetzt hier aufgerufen.
         self.save_performance(quality)
         if self.mode == 'spaced_repetition':
             self.update_task_spaced_repetition(quality)
