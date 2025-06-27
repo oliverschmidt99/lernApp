@@ -53,27 +53,24 @@ class BaseTaskEditor(ttk.Frame):
     def build_editor_ui(self, parent):
         colors = constants.THEMES[self.controller.current_theme.get()]
 
-        top_section = ttk.Frame(parent)
-        top_section.pack(side="top", fill="x", pady=10, padx=10)
-
-        ttk.Label(top_section, text=self.get_title(), font=("Helvetica", 16, "bold")).pack(pady=10)
+        ttk.Label(parent, text=self.get_title(), font=("Helvetica", 16, "bold")).pack(pady=10)
         
-        name_frame = ttk.LabelFrame(top_section, text="Aufgabenname")
-        name_frame.pack(pady=(10, 0), fill="x")
+        name_frame = ttk.LabelFrame(parent, text="Aufgabenname")
+        name_frame.pack(pady=(10, 0), padx=10, fill="x")
         self.task_name_entry = ttk.Entry(name_frame)
         self.task_name_entry.pack(pady=5, padx=5, fill="x")
         self.task_name_entry.bind("<KeyRelease>", self._schedule_autosave)
 
-        desc_frame = ttk.LabelFrame(top_section, text="Aufgabenbeschreibung")
-        desc_frame.pack(pady=10, fill="x")
+        desc_frame = ttk.LabelFrame(parent, text="Aufgabenbeschreibung")
+        desc_frame.pack(pady=10, padx=10, fill="x")
         self.task_desc_text = tk.Text(desc_frame, height=4, wrap=tk.WORD, bg=colors["text_bg"], fg=colors["fg"], insertbackground=colors['fg'])
         self.task_desc_text.pack(pady=5, padx=5, fill="x", expand=True)
         self.task_desc_text.bind('<Control-v>', self._handle_paste_main)
         self.task_desc_text.bind('<Control-a>', self._select_all)
         self.task_desc_text.bind("<KeyRelease>", self._schedule_autosave)
 
-        task_images_container = ttk.LabelFrame(top_section, text="Aufgabenbilder")
-        task_images_container.pack(pady=10, fill="x")
+        task_images_container = ttk.LabelFrame(parent, text="Aufgabenbilder")
+        task_images_container.pack(pady=10, padx=10, fill="x")
         self.task_images_frame = ttk.Frame(task_images_container)
         self.task_images_frame.pack(fill="x", padx=5, pady=5)
         
@@ -85,36 +82,27 @@ class BaseTaskEditor(ttk.Frame):
         drop_zone_task.dnd_bind('<<Drop>>', self._on_drop_task_image)
         ttk.Button(img_drop_frame_task, text="...", command=self.select_task_image, width=4).pack(side="left", padx=10)
 
-        tags_frame = ttk.LabelFrame(top_section, text="Tags (mit Komma getrennt)")
-        tags_frame.pack(pady=10, fill="x")
+        tags_frame = ttk.LabelFrame(parent, text="Tags (mit Komma getrennt)")
+        tags_frame.pack(pady=10, padx=10, fill="x")
         self.tags_entry = ttk.Entry(tags_frame)
         self.tags_entry.pack(pady=5, padx=5, fill="x")
         self.tags_entry.bind("<KeyRelease>", self._schedule_autosave)
         
-        subtask_container = ttk.LabelFrame(parent, text="Unteraufgaben")
-        subtask_container.pack(side="top", fill="both", expand=True, padx=10, pady=10)
+        self.subtasks_frame = ttk.LabelFrame(parent, text="Unteraufgaben")
+        self.subtasks_frame.pack(pady=10, padx=10, fill="x")
 
-        self.subtask_canvas = tk.Canvas(subtask_container, borderwidth=0, highlightthickness=0, bg=colors['bg'])
-        subtask_scrollbar = ttk.Scrollbar(subtask_container, orient="vertical", command=self.subtask_canvas.yview)
-        self.subtasks_frame = ttk.Frame(self.subtask_canvas)
-        
-        self.subtask_canvas.configure(yscrollcommand=subtask_scrollbar.set)
-        subtask_scrollbar.pack(side="right", fill="y")
-        self.subtask_canvas.pack(side="left", fill="both", expand=True)
-        
-        subtask_canvas_window = self.subtask_canvas.create_window((0, 0), window=self.subtasks_frame, anchor="nw")
-        
-        self.subtasks_frame.bind("<Configure>", lambda e: self.subtask_canvas.configure(scrollregion=self.subtask_canvas.bbox("all")))
-        self.subtask_canvas.bind("<Configure>", lambda e: self.subtask_canvas.itemconfig(subtask_canvas_window, width=e.width))
-        utils.bind_mouse_scroll(self, self.subtask_canvas)
-
-        ttk.Button(top_section, text="+ Teilaufgabe hinzufügen", command=self.add_subtask_fields).pack(pady=5)
+        ttk.Button(parent, text="+ Teilaufgabe hinzufügen", command=self.add_subtask_fields).pack(pady=5)
 
     def add_subtask_fields(self, subtask_data=None):
         subtask_data = subtask_data or {}
         colors = constants.THEMES[self.controller.current_theme.get()]
         
-        frame = ttk.LabelFrame(self.subtasks_frame, text=f"Teilaufgabe {len(self.subtask_widgets) + 1}")
+        # Container mit abgesetzter Hintergrundfarbe
+        container = tk.Frame(self.subtasks_frame, bg=colors["subtask_bg"], bd=1, relief="sunken")
+        container.pack(pady=5, fill="x", padx=5)
+
+        label_text = f"Teilaufgabe {chr(97 + len(self.subtask_widgets))})"
+        frame = ttk.LabelFrame(container, text=label_text)
         frame.pack(pady=5, fill="x", padx=5)
         
         delete_subtask_button = ttk.Button(frame, text="X", style="Danger.TButton", width=2)
@@ -158,7 +146,6 @@ class BaseTaskEditor(ttk.Frame):
         self.subtask_widgets.append(widgets)
         
         self._redraw_solution_images_ui(widgets)
-        utils.bind_mouse_scroll(frame, self.subtask_canvas)
     
     def _redraw_task_images_ui(self):
         for widget in self.task_images_frame.winfo_children(): widget.destroy()
@@ -178,14 +165,14 @@ class BaseTaskEditor(ttk.Frame):
             ttk.Label(f, text=f"{i+1}: {os.path.basename(path)}").pack(side='left')
 
     def _delete_subtask(self, widget_dict_to_delete):
-        self.subtask_widgets.remove(widget_dict_to_delete)
         widget_dict_to_delete['frame'].destroy()
+        self.subtask_widgets.remove(widget_dict_to_delete)
         self._renumber_subtasks()
         self._schedule_autosave()
 
     def _renumber_subtasks(self):
         for i, widget_dict in enumerate(self.subtask_widgets):
-            widget_dict['frame'].config(text=f"Teilaufgabe {i + 1}")
+            widget_dict['frame'].config(text=f"Teilaufgabe {chr(97 + i)})")
 
     def _add_task_image(self, path, from_load=False):
         if path and path not in self._task_image_full_paths:
@@ -305,8 +292,22 @@ class EditSetFrame(BasePage):
         self.task_listbox.bind("<<ListboxSelect>>", self.on_task_select)
         ttk.Button(left_frame, text="+ Neue Aufgabe erstellen", command=self.create_new_task).pack(fill='x', pady=5)
         
-        self.editor_container = ttk.Frame(paned_window)
-        paned_window.add(self.editor_container, weight=3)
+        # KORREKTUR: Der rechte Bereich ist jetzt ein scrollbarer Canvas
+        editor_canvas_container = ttk.Frame(paned_window)
+        paned_window.add(editor_canvas_container, weight=3)
+        
+        self.editor_canvas = tk.Canvas(editor_canvas_container, borderwidth=0, highlightthickness=0, bg=colors['bg'])
+        editor_scrollbar = ttk.Scrollbar(editor_canvas_container, orient="vertical", command=self.editor_canvas.yview)
+        self.editor_container = ttk.Frame(self.editor_canvas)
+        
+        self.editor_canvas.configure(yscrollcommand=editor_scrollbar.set)
+        editor_scrollbar.pack(side="right", fill="y")
+        self.editor_canvas.pack(side="left", fill="both", expand=True)
+        
+        canvas_window = self.editor_canvas.create_window((0, 0), window=self.editor_container, anchor="nw")
+        
+        self.editor_container.bind("<Configure>", lambda e: self.editor_canvas.configure(scrollregion=self.editor_canvas.bbox("all")))
+        self.editor_canvas.bind("<Configure>", lambda e: self.editor_canvas.itemconfig(canvas_window, width=e.width))
         
         self.refresh_task_list()
         self.show_placeholder()
@@ -315,23 +316,20 @@ class EditSetFrame(BasePage):
         from .set_select_frame import SetSelectFrame
         self.controller.show_frame(SetSelectFrame, subject_id=self.subject_id)
 
-    def create_star_rating(self, rating):
-        return "★" * rating + "☆" * (5 - rating)
-
     def show_placeholder(self):
+        """Zeigt eine Nachricht an, wenn keine Aufgabe ausgewählt ist."""
         for widget in self.editor_container.winfo_children(): widget.destroy()
         ttk.Label(self.editor_container, text="Wähle eine Aufgabe aus oder erstelle eine neue.", font=("Helvetica", 12)).pack(pady=50)
 
     def refresh_task_list(self, keep_selection=False):
+        """Aktualisiert die Liste der Aufgaben."""
         original_selection_index = self.task_listbox.curselection()
         
         self.task_listbox.delete(0, tk.END)
         self.tasks = self.controller.data[self.subject_id]["sets"][self.set_id].get("tasks", [])
         for i, task in enumerate(self.tasks):
             preview = task.get('name', 'Unbenannte Aufgabe')
-            rating = task.get('rating', 0)
-            stars = self.create_star_rating(rating)
-            self.task_listbox.insert(tk.END, f"{stars} | {preview}")
+            self.task_listbox.insert(tk.END, f" {preview}")
         
         if keep_selection and original_selection_index:
             self.task_listbox.selection_set(original_selection_index)
@@ -347,19 +345,30 @@ class EditSetFrame(BasePage):
         self.load_editor(task_data)
 
     def create_new_task(self):
-        self.current_task_id = None
-        self.task_listbox.selection_clear(0, tk.END)
-        self.load_editor(None)
+        new_task = {
+            "id": str(uuid.uuid4()), "name": "Neue Aufgabe", "beschreibung": "",
+            "tags": [], "bilder_aufgabe": [], "unteraufgaben": [],
+            "history": [], "rating": 0
+        }
+        self.controller.data[self.subject_id]["sets"][self.set_id]["tasks"].append(new_task)
+        self.controller.data_manager.save_data(self.controller.data)
+        self.refresh_task_list()
+        
+        self.task_listbox.selection_set(tk.END)
+        self.load_editor(new_task)
 
     def load_editor(self, task_data):
+        """Lädt den Editor für eine neue oder bestehende Aufgabe."""
         for widget in self.editor_container.winfo_children(): widget.destroy()
-        editor = self.TaskEditor(self.editor_container, self.controller, self.subject_id, self.set_id, task_data, self.refresh_task_list)
+        editor = self.TaskEditor(self.editor_container, self.controller, self.subject_id, self.set_id, task_data, self)
         editor.pack(fill="both", expand=True)
+        # KORREKTUR: Das Scrollen wird jetzt hier, nach dem Erstellen des Editors, gebunden.
+        utils.bind_mouse_scroll(editor, self.editor_canvas)
 
     class TaskEditor(BaseTaskEditor):
-        def __init__(self, parent, controller, subject_id, set_id, task_data, refresh_callback):
+        def __init__(self, parent, controller, subject_id, set_id, task_data, edit_set_frame):
             self.task_data = copy.deepcopy(task_data) if task_data else None
-            self.refresh_callback = refresh_callback
+            self.edit_set_frame = edit_set_frame
             
             self.undo_stack = deque(maxlen=21)
             self.redo_stack = deque(maxlen=20)
@@ -375,7 +384,7 @@ class EditSetFrame(BasePage):
                 self.add_subtask_fields()
         
         def _load_data_into_widgets(self, data):
-            """Befüllt den Editor mit Daten (geht jetzt vom neuen Format aus)."""
+            """Befüllt den Editor mit Daten."""
             self.task_name_entry.delete(0, tk.END)
             self.task_name_entry.insert(0, data.get('name', ''))
             
@@ -395,12 +404,11 @@ class EditSetFrame(BasePage):
                 self.add_subtask_fields(subtask_data)
 
         def get_title(self):
-            return "Aufgabe bearbeiten" if self.task_data else "Neue Aufgabe erstellen"
+            return "Aufgabe bearbeiten"
             
         def setup_buttons(self, parent):
             """Richtet die Buttons und die Statusanzeige ein."""
-            top_section = parent.winfo_children()[0]
-            btn_frame = ttk.Frame(top_section)
+            btn_frame = ttk.Frame(parent)
             btn_frame.pack(side="bottom", fill="x", pady=10, padx=10)
             
             self.undo_button = ttk.Button(btn_frame, text="Rückgängig", command=self.undo, state="disabled")
@@ -410,8 +418,7 @@ class EditSetFrame(BasePage):
             self.status_label = ttk.Label(btn_frame, text="")
             self.status_label.pack(side="left", padx=5)
             
-            if self.task_data:
-                ttk.Button(btn_frame, text="Löschen", style="Danger.TButton", command=self.delete_task).pack(side="right")
+            ttk.Button(btn_frame, text="Löschen", style="Danger.TButton", command=self.delete_task).pack(side="right")
         
         def _update_undo_redo_state(self):
             self.undo_button.config(state="normal" if len(self.undo_stack) > 1 else "disabled")
@@ -462,25 +469,15 @@ class EditSetFrame(BasePage):
 
             task_list = self.controller.data[self.subject_id]["sets"][self.set_id].setdefault("tasks", [])
             
-            task_found = False
-            if self.task_data and self.task_data.get('id'): 
-                for i, task in enumerate(task_list):
-                    if task.get('id') == self.task_data['id']:
-                        updated_data['id'] = self.task_data['id']
-                        updated_data['history'] = task.get('history', [])
-                        updated_data['rating'] = task.get('rating', 0)
-                        task_list[i] = updated_data
-                        self.task_data = updated_data
-                        task_found = True
-                        break
-            
-            if not task_found:
-                new_id = str(uuid.uuid4())
-                updated_data['id'] = new_id
-                updated_data['history'] = []
-                updated_data['rating'] = 0
-                task_list.append(updated_data)
-                self.task_data = updated_data
+            for i, task in enumerate(task_list):
+                if task.get('id') == self.task_data['id']:
+                    updated_data['id'] = self.task_data['id']
+                    updated_data['history'] = task.get('history', [])
+                    updated_data['rating'] = task.get('rating', 0)
+                    updated_data['sm_data'] = task.get('sm_data', {})
+                    task_list[i] = updated_data
+                    self.task_data = updated_data
+                    break
             
             self.controller.data_manager.save_data(self.controller.data)
             
@@ -488,16 +485,15 @@ class EditSetFrame(BasePage):
                 self.status_label.config(text="Gespeichert!")
                 self.after(2000, lambda: self.status_label.config(text=""))
             
-            self.refresh_callback(keep_selection=True)
+            self.edit_set_frame.refresh_task_list(keep_selection=True)
             self._update_undo_redo_state()
 
         def delete_task(self):
             if messagebox.askyesno("Löschen", "Soll diese Aufgabe wirklich endgültig gelöscht werden?", icon='warning', default='no'):
-                edit_set_frame = self.master.master
+                self.edit_set_frame.show_placeholder()
                 
                 task_list = self.controller.data[self.subject_id]["sets"][self.set_id]["tasks"]
                 task_list[:] = [t for t in task_list if t.get('id') != self.task_data['id']]
                 self.controller.data_manager.save_data(self.controller.data)
                 
-                edit_set_frame.show_placeholder()
-                edit_set_frame.refresh_task_list()
+                self.edit_set_frame.refresh_task_list()

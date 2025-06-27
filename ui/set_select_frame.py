@@ -6,9 +6,7 @@ from functools import partial
 
 # Relative Importe aus dem ui-Paket
 from .base_frames import BasePage
-from .edit_set_frame import EditSetFrame
-from .quiz_frame import QuizFrame
-from .statistics_frame import StatisticsFrame
+# KORREKTUR: Alle Frame-übergreifenden Imports werden entfernt und in die Methoden verschoben
 from . import custom_dialogs
 
 # Absolute Importe
@@ -100,6 +98,7 @@ class SetSelectFrame(BasePage):
 
     def load_statistics_for_set(self, set_id):
         """Lädt die Statistik-Ansicht für das ausgewählte Set auf der rechten Seite."""
+        from .statistics_frame import StatisticsFrame
         for widget in self.statistics_container.winfo_children():
             widget.destroy()
         
@@ -155,18 +154,17 @@ class SetSelectFrame(BasePage):
         if new_name:
             self.subject_data["sets"][set_id]["name"] = new_name
             self.controller.data_manager.save_data(self.controller.data)
-            self.after(10, self.refresh_view) # KORREKTUR
+            self.after(10, self.refresh_view)
 
     def change_item_color(self, set_id, hex_code):
         self.subject_data["sets"][set_id]["color"] = hex_code
         self.controller.data_manager.save_data(self.controller.data)
-        self.after(10, self.refresh_view) # KORREKTUR
+        self.after(10, self.refresh_view)
 
     def delete_item(self, set_id):
         name = self.subject_data["sets"][set_id]["name"]
         if messagebox.askyesno("Löschen", f"Soll das Lernset '{name}' wirklich gelöscht werden?", icon='warning', default='no'):
             del self.subject_data["sets"][set_id]
             self.controller.data_manager.save_data(self.controller.data)
-            # KORREKTUR
             self.after(10, self.refresh_view)
             self.after(10, self.show_placeholder)

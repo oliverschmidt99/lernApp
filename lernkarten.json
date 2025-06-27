@@ -1,6 +1,6 @@
 {
     "settings": {
-        "theme": "light",
+        "theme": "dark",
         "data_version": 2
     },
     "62cf73e2-7022-4d83-8081-65a46fa0158a": {
@@ -398,7 +398,274 @@
             "92e05e59-b548-4aca-aab0-84f2833212f9": {
                 "name": "Klausur – SS 2020",
                 "color": "#CAFFBF",
-                "tasks": []
+                "tasks": [
+                    {
+                        "name": "Aufgabe 1: Optimierung",
+                        "beschreibung": "2\n​\n . Die Herstellung erfolgt so, dass jedes Stück auf den beiden Maschinen A und B bearbeitet wird.",
+                        "tags": [],
+                        "bilder_aufgabe": [
+                            "images/1751048873_912_Bildschirmfoto_20250627_202700.png"
+                        ],
+                        "unteraufgaben": [],
+                        "id": "9c18860f-2b3b-4b96-954f-c318818f0f77",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {
+                            "status": "new",
+                            "next_review_at": 1751051086.8860343
+                        }
+                    }
+                ]
+            },
+            "1a864df8-008f-498a-82d2-a8928c1aad99": {
+                "name": "Klausur  – SS 2019",
+                "color": "#FFADAD",
+                "tasks": [
+                    {
+                        "name": "Aufgabe 1: Optimierung (18 Punkte)",
+                        "beschreibung": "Der Student Paul hat im Monat 400 EUR zu Verfuegung. Er beschliesst, dieses Geld fuer Bier und Brot auszugeben. Eine Flasche Bier kostet 1 EUR und ein Brot 1,25 EUR. Er rechnet pro Bier 0,2 km Weg und pro Brot 0,48 km. Insgesamt moechte er fuer Brot- und Bierholen im Monat nicht mehr als 120 km zuruecklegen. Den Nutzen (c) eines Brotes setzt er 1,5-mal soch hoch an wie den einer Flasche Bier.",
+                        "tags": [],
+                        "bilder_aufgabe": [],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Formulieren Sie mathematisch das Optimierungsproblem (Zielfunktion + Nebenbedingungen).",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751051317_336_Bildschirmfoto_20250627_210832.png"
+                                ]
+                            },
+                            {
+                                "frage": "Ermitteln Sie rechnerisch das Ergebnis des Optimierungsproblems.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751049340_949_Bildschirmfoto_20250627_203537.png"
+                                ]
+                            }
+                        ],
+                        "id": "41b5f0e5-23b5-47c8-ab68-182cd2ad851e",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {
+                            "status": "new",
+                            "next_review_at": 1751051002.0181324,
+                            "consecutive_good": 0
+                        }
+                    },
+                    {
+                        "name": "Aufgabe 2: Spannungshaltung (17 Punkte)",
+                        "beschreibung": "Am Ende eines l = 15 km langen 20-kV-Mittelspannungskabels vom Typ NA2XSY 3x150 mm^2 (R'_L = 0,208 Ohm/km, X'_L = 0,104 Ohm/km) wird ein Windpark mit einer Nennleistung von S_N = 10 MVA (dreiphasig) angeschlossen. Es soll nun abgeschaetzt werden, ob es zu Spannungsbandverletzungen kommt. Der Windpark speist zuerst mit reiner Wirkleistung in das Netz ein (lambda = 1). Weitere Einspeiser sind nicht vorhanden. Die Lasten, die an der Mittelspannungsleitung angeschlossen sind, koennen vernachlaessigt werden.",
+                        "tags": [],
+                        "bilder_aufgabe": [],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Zeichnen Sie das einphasige Ersatzschaltbild und beschriften Sie es vollstaendig.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie nach der exakten Methode den relativen Spannungshub Delta u_WP am Netzverknuepfungspunkt des Windparks.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie naeherungsweise den relativen Spannungshub am Netzverknuepfungspunkt des Windparks (losgeloest von b) loesbar).",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751051424_844_Bildschirmfoto_20250627_211020.png"
+                                ]
+                            },
+                            {
+                                "frage": "Skizzieren Sie das Zeigerdiagramm der Spannungen und Stroeme.",
+                                "loesung": "",
+                                "bilder_loesung": []
+                            },
+                            {
+                                "frage": "Der Betrag des Einspeisestroms sei nun konstant und gemaess c) vorgegeben. Die Phasenlage des Stromes ist jedoch variabel. Bestimmen Sie mit Hilfe des Zeigerdiagrammes aus d) sowie des Kosinussatzes die Phasenlage des Stromes, so dass ein Spannungshub von 5% entsteht.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751049549_354_Bildschirmfoto_20250627_203906.png"
+                                ]
+                            }
+                        ],
+                        "id": "a5596be1-f11b-4d7b-976a-27faac85a709",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {
+                            "status": "new",
+                            "next_review_at": 1751051002.0181324,
+                            "consecutive_good": 0
+                        }
+                    },
+                    {
+                        "name": "Aufgabe 3: Thermische Betrachtungen (16 Punkte)",
+                        "beschreibung": "Von einem HS/MS-Transformator (ONAN gekuehlt) sind folgende Daten bekannt:",
+                        "tags": [],
+                        "bilder_aufgabe": [
+                            null
+                        ],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Zeichnen Sie das thermische Ersatzschaltbild des Transformators und beschriften Sie es vollstaendig.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie die Waermekapazitaet C_th des Transformators.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie den thermischen Widerstand R_th im Auslegungspunkt.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie die thermische Zeitkonstante tau_th.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Ermitteln Sie die maximale Dauerscheinleistung S_max, die der Transformator bei einer Aussentemperatur von T_U = 20 Grad C uebertragen kann.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Um wie viel Prozent kann der Transformator bei T_U = 20 Grad C im Vergleich zum Auslegungspunkt (T_U = 40 Grad C) ueberlastet werden?",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751049771_262_Bildschirmfoto_20250627_204245.png"
+                                ]
+                            }
+                        ],
+                        "id": "480395fc-cf91-495c-aabd-ca7fe47cb6f3",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {
+                            "status": "new",
+                            "next_review_at": 1751051002.0181324,
+                            "consecutive_good": 0
+                        }
+                    },
+                    {
+                        "name": "Aufgabe 4: Netzberechnung (20 Punkte)",
+                        "beschreibung": "Zur Auslegung eines Niederspannungsabganges wird die Worst-Case-Situation, \"maximale Einspeisung bei minimaler Last\" zum Zeitpunkt der maximalen Einspeisung betrachtet. Von der Sammelschiene (0) geht eine l = 0,8 km lange 400-V-Niederspannungsleitung vom Typ 4x150 mm^2 ab (R' = 0,206 Ohm/km, X' = 0,084 Ohm/km). In der Mitte der Leitung (l_01 = 400 m) wird die minimale Last aller Kunden mit S_1 = 150 kVA, lambda_1 = 0,95 (ind.) als Punktlast (dreiphasig) modelliert. Am Ende der Leitung werden die vorhandenen Photovoltaikanlagen als Punkteinspeiser mit S_2 = 100 kVA, lambda_2 = 1 (dreiphasig) dargestellt.",
+                        "tags": [],
+                        "bilder_aufgabe": [],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Bestimmen Sie die Phasenwinkel der komplexen Scheinleistungen S_1 und S_2.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie die komplexen Knotenspannungen U_1 und U_2, indem Sie eine vollstaendige Iteration mit der Forward-Backward-Methode durchfuehren.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Wie gross sind betragsmaessig die relativen Abweichungen der Spannungen an Knoten 1 und 2 nach der 1. Iteration im Vergleich zu den Startwerten?",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751049926_690_Bildschirmfoto_20250627_204523.png"
+                                ]
+                            }
+                        ],
+                        "id": "ac296578-b233-47cd-abff-8b3d85a2ce28",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {
+                            "status": "new",
+                            "next_review_at": 1751051002.0181324,
+                            "consecutive_good": 0
+                        }
+                    },
+                    {
+                        "name": "Aufgabe 5: Zustandsschaetzung (14 Punkte)",
+                        "beschreibung": "Betrachtet wird die Parallelschaltung zweier ohmscher Widerstaende. Die Widerstaende sind mit R_1 = 20 Ohm und R_2 = 5 Ohm gegeben. Ferner werden die folgenden Werte gemessen: I^m = 2,4 A und I_1^m = 0,55 A. Anhand der Messwerte soll die Gesamtspannung U geschaetzt werden.",
+                        "tags": [],
+                        "bilder_aufgabe": [
+                            "images/1751050035_463_Bildschirmfoto_20250627_204642.png"
+                        ],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Berechnen Sie die Redundanz eta.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Geben Sie die Funktionen der Messmodelle I = f(U) und I_1 = f_1(U) an.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie den Schaetzwert U_dach der Gesamtspannung U. Gehen Sie davon aus, dass die Strommessgeraete die gleiche Genauigkeit haben (sigma^2 = sigma_1^2).",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie den Schaetzwert U_dach, wenn die Varianzen der Strommessungen sigma_I^2 = 0,1 A^2 und sigma_I1^2 = 0,01 A^2 betragen.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    null
+                                ]
+                            },
+                            {
+                                "frage": "Der wahre Wert der Spannung sei mit U^t = 10 V gegeben. Wie gross ist der relative Schaetzfehler (Betrag) nach c) und d).",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751050241_367_Bildschirmfoto_20250627_205038.png"
+                                ]
+                            }
+                        ],
+                        "id": "00a2525c-dfe1-428d-87ef-3f4cd8baaaaf",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {
+                            "status": "new",
+                            "next_review_at": 1751051002.0181324,
+                            "consecutive_good": 0
+                        }
+                    },
+                    {
+                        "name": "Aufgabe 6: Wissensfragen (15 Punkte)",
+                        "beschreibung": "Was versteht man unter einer linearen Optimierung?",
+                        "tags": [],
+                        "bilder_aufgabe": [],
+                        "unteraufgaben": [],
+                        "id": "10e34278-01db-46e5-a93a-2e53ecd0cd24",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {
+                            "status": "new",
+                            "next_review_at": 1751051002.0181324,
+                            "consecutive_good": 0
+                        }
+                    }
+                ]
             }
         }
     }

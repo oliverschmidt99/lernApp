@@ -35,7 +35,8 @@ class StatisticsFrame(ttk.Frame):
         
         ttk.Label(action_frame, text=set_name, font=("Helvetica", 16, "bold")).pack(side="left", padx=(0, 20))
         
-        ttk.Button(action_frame, text="Lernen", command=self._show_session_size_prompt).pack(side="left", padx=5)
+        # KORREKTUR: Der "Lernen"-Button öffnet jetzt das Auswahl-Popup
+        ttk.Button(action_frame, text="Lernen", command=self._show_learning_options_popup).pack(side="left", padx=5)
         ttk.Button(action_frame, text="Bearbeiten", command=self._edit_set).pack(side="left", padx=5)
         ttk.Button(action_frame, text="Fortschritt zurücksetzen", style="Danger.TButton", command=self._reset_set_progress).pack(side="left", padx=5)
 
@@ -47,40 +48,91 @@ class StatisticsFrame(ttk.Frame):
 
         self.update_plots()
 
-
+    # --- KORREKTUR: Neue Helferfunktionen für die Modus-Auswahl ---
     def _start_quiz(self, popup, mode, session_size=None):
-        popup.destroy()
+        """Schließt das Popup und startet das Quiz mit den gewählten Optionen."""
+        if popup:
+            popup.destroy()
+        # Verzögerung, um Tkinter Zeit zum Aufräumen zu geben
         callback = partial(self.controller.show_frame, QuizFrame, subject_id=self.subject_id, set_id=self.set_id, mode=mode, session_size=session_size)
         self.after(20, callback)
+
+    def _show_learning_options_popup(self):
+        """Zeigt ein Popup zur Auswahl des Lernmodus."""
+        popup = tk.Toplevel(self)
+        popup.title("Lernmodus wählen")
+        popup.transient(self)
+
+        content_frame = ttk.Frame(popup, padding=20)
+        content_frame.pack(expand=True, fill='both')
+
+        ttk.Button(content_frame, text="Sequenziell lernen",
+                   command=lambda: self._start_quiz(popup, 'sequential'),
+                   state="normal" if self.tasks else "disabled").pack(pady=5, fill='x')
+
+        ttk.Button(content_frame, text="Spaced Repetition",
+                   command=lambda: self._show_session_size_prompt(popup),
+                   state="normal" if self.tasks else "disabled").pack(pady=5, fill='x')
+        
+        popup.update_idletasks()
+        x = self.winfo_toplevel().winfo_x() + (self.winfo_toplevel().winfo_width() // 2) - (popup.winfo_width() // 2)
+        y = self.winfo_toplevel().winfo_y() + (self.winfo_toplevel().winfo_height() // 2) - (popup.winfo_height() // 2)
+        popup.geometry(f"+{x}+{y}")
+        popup.grab_set()
 
     def _edit_set(self):
         callback = partial(self.controller.show_frame, EditSetFrame, subject_id=self.subject_id, set_id=self.set_id)
         self.after(20, callback)
         
-    def _show_session_size_prompt(self):
+    def _show_session_size_prompt(self, parent_popup):
         """Zeigt einen Dialog zur Auswahl der Sitzungsgröße."""
+        now = time.time()
+        for task in self.tasks:
+            task.setdefault('sm_data', {'status': 'new', 'next_review_at': now})
+        
+        due_tasks = [t for t in self.tasks if t['sm_data']['next_review_at'] <= now and t['sm_data']['status'] not in ['mastered', 'perfect']]
+        num_due_tasks = len(due_tasks)
+
+        if num_due_tasks == 0:
+            messagebox.showinfo("Keine Karten fällig", "Super! Es stehen aktuell keine Karten zur Wiederholung an.")
+            return
+            
         prompt = tk.Toplevel(self)
         prompt.title("Sitzungsgröße")
-        prompt.transient(self)
+        prompt.transient(parent_popup)
         
         bg_color = constants.THEMES[self.controller.current_theme.get()]["bg"]
         prompt.config(bg=bg_color)
         
-        ttk.Label(prompt, text="Wie viele Karten möchtest du lernen?", padding=20).pack()
+        ttk.Label(prompt, text=f"Wie viele der {num_due_tasks} fälligen Karten möchtest du lernen?", padding=15).pack()
+        
+        slider_var = tk.IntVar(value=min(10, num_due_tasks))
+        
+        value_frame = ttk.Frame(prompt, padding=(0,0,0,10))
+        value_frame.pack()
+        
+        value_label = ttk.Label(value_frame, text=f"{slider_var.get()}", font=("Helvetica", 14, "bold"))
+        value_label.pack()
+
+        def update_label(value):
+            value_label.config(text=f"{int(float(value))}")
+
+        slider = ttk.Scale(prompt, from_=1, to=num_due_tasks, variable=slider_var, command=update_label, orient='horizontal')
+        slider.pack(fill='x', expand=True, padx=20)
         
         btn_frame = ttk.Frame(prompt, padding=10)
         btn_frame.pack()
         
-        def start(size):
-            self._start_quiz(prompt, 'spaced_repetition', session_size=size)
+        def start():
+            session_size = slider_var.get()
+            prompt.destroy()
+            self._start_quiz(parent_popup, 'spaced_repetition', session_size=session_size)
 
-        ttk.Button(btn_frame, text="Alle fälligen", command=lambda: start(None)).pack(side="left", padx=5)
-        ttk.Button(btn_frame, text="5", command=lambda: start(5)).pack(side="left", padx=5)
-        ttk.Button(btn_frame, text="10", command=lambda: start(10)).pack(side="left", padx=5)
+        ttk.Button(btn_frame, text="Lernsitzung starten", command=start).pack(pady=5)
 
         prompt.update_idletasks()
-        x = self.winfo_toplevel().winfo_x() + (self.winfo_toplevel().winfo_width() // 2) - (prompt.winfo_width() // 2)
-        y = self.winfo_toplevel().winfo_y() + (self.winfo_toplevel().winfo_height() // 2) - (prompt.winfo_height() // 2)
+        x = parent_popup.winfo_x() + (parent_popup.winfo_width() // 2) - (prompt.winfo_width() // 2)
+        y = parent_popup.winfo_y() + (parent_popup.winfo_height() // 2) - (prompt.winfo_height() // 2)
         prompt.geometry(f"+{x}+{y}")
         prompt.grab_set()
 
@@ -92,7 +144,7 @@ class StatisticsFrame(ttk.Frame):
         if not self.tasks:
             ttk.Label(self.plot_container, text="Dieses Lernset enthält noch keine Aufgaben.").pack(pady=20)
             return
-        
+
         self.create_plots(self.plot_container, self.tasks)
 
 
@@ -116,88 +168,57 @@ class StatisticsFrame(ttk.Frame):
         text_color = theme['fg']
         plt.style.use('seaborn-v0_8-darkgrid' if self.controller.current_theme.get() == 'dark' else 'seaborn-v0_8-whitegrid')
 
-        # --- Kuchendiagramm ---
         status_counts = Counter(t.get('sm_data', {}).get('status', 'new') for t in tasks)
-        pie_labels = list(status_counts.keys())
-        pie_sizes = list(status_counts.values())
-        pie_colors = [constants.STATUS_COLORS.get(status, 'grey') for status in pie_labels]
+        labels = list(status_counts.keys())
+        sizes = list(status_counts.values())
+        colors = [constants.STATUS_COLORS.get(status, 'grey') for status in labels]
 
-        # KORREKTUR: Layout auf 2 Reihen, 1 Spalte geändert
-        self.fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), gridspec_kw={'height_ratios': [1, 1]})
-        self.fig.patch.set_facecolor(theme['bg'])
+        self.fig = plt.figure(figsize=(12, 6), facecolor=theme['bg'])
+        
+        # Aufteilung in 1 Reihe, 2 Spalten
+        gs = self.fig.add_gridspec(1, 2, width_ratios=[1, 1.5])
+        ax1 = self.fig.add_subplot(gs[0])
+        ax2 = self.fig.add_subplot(gs[1])
 
-        ax1.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%',
+        ax1.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%',
                 startangle=90, textprops={'color': text_color})
         ax1.axis('equal')
         ax1.set_title('Aktueller Lernstatus', color=text_color)
         
-        # --- Liniendiagramm Container ---
-        line_chart_container = ttk.Frame(parent)
-        line_chart_container.pack(fill='both', expand=True)
-        
-        # --- Dropdown für Liniendiagramm ---
-        control_frame = ttk.Frame(line_chart_container)
-        control_frame.pack(fill='x', pady=5)
-        task_names = ["Gesamtübersicht"] + [task.get('name', 'Unbenannte Aufgabe') for task in self.tasks]
-        task_var = tk.StringVar(value=task_names[0])
-        ttk.Label(control_frame, text="Verlauf anzeigen für:").pack(side='left', padx=(0, 5))
-        task_selector = ttk.Combobox(control_frame, textvariable=task_var, values=task_names, state='readonly', width=45)
-        task_selector.pack(side='left', padx=5)
-
-        def on_line_chart_select(event=None):
-            selected_index = task_selector.current()
-            if selected_index == -1: return
-            
-            history_data = []
-            if selected_index == 0:
-                 for task in self.tasks: history_data.extend(task.get('history', []))
-            else:
-                task = self.tasks[selected_index - 1]
-                history_data = task.get('history', [])
-            
-            history_data.sort(key=lambda x: x.get('timestamp', 0))
-            self._update_line_chart(ax2, history_data, theme)
-            self.canvas.draw()
-
-        task_selector.bind("<<ComboboxSelected>>", on_line_chart_select)
-
-        # Initiales Zeichnen des Liniendiagramms
-        initial_history = []
-        for task in self.tasks: initial_history.extend(task.get('history', []))
-        initial_history.sort(key=lambda x: x.get('timestamp', 0))
-        self._update_line_chart(ax2, initial_history, theme)
-        
-        self.fig.tight_layout(pad=3.0)
-
-        self.canvas = FigureCanvasTkAgg(self.fig, line_chart_container)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-
-    def _update_line_chart(self, ax, history_data, theme):
-        """Zeichnet nur das Liniendiagramm neu."""
-        ax.clear()
-        text_color = theme['fg']
+        # Liniendiagramm
+        history_data = []
+        for task in tasks:
+            history_data.extend(task.get('history', []))
+        history_data.sort(key=lambda x: x.get('timestamp', 0))
 
         if history_data:
             attempts = range(1, len(history_data) + 1)
             quality_map = {'bad': 0, 'ok': 1, 'good': 2, 'perfect': 3}
             quality_scores = [quality_map.get(d.get('quality'), 0) for d in history_data]
             
-            ax.set_facecolor(theme['card_bg'])
-            ax.plot(attempts, quality_scores, marker='o', linestyle='-', color='tab:green')
-            ax.set_xlabel('Lernsitzung (Versuch Nr.)', color=text_color)
-            ax.set_ylabel('Bewertungsqualität', color=text_color)
-            ax.tick_params(axis='y', colors=text_color)
-            ax.tick_params(axis='x', colors=text_color)
-            ax.spines['bottom'].set_color(text_color)
-            ax.spines['left'].set_color(text_color)
-            ax.spines['top'].set_color(text_color)
-            ax.spines['right'].set_color(text_color)
-            ax.set_yticks(list(quality_map.values()), labels=list(quality_map.keys()))
-            ax.set_title("Fortschritt über die Zeit", color=text_color)
-            ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+            ax2.set_facecolor(theme['card_bg'])
+            ax2.plot(attempts, quality_scores, marker='o', linestyle='-', color='tab:green')
+            ax2.set_xlabel('Lernsitzung (Versuch Nr.)', color=text_color)
+            ax2.set_ylabel('Bewertungsqualität', color=text_color)
+            ax2.tick_params(axis='y', colors=text_color)
+            ax2.tick_params(axis='x', colors=text_color)
+            for spine in ax2.spines.values():
+                spine.set_color(text_color)
+            ax2.set_yticks(list(quality_map.values()), labels=list(quality_map.keys()))
+            ax2.xaxis.set_major_locator(MaxNLocator(integer=True))
         else:
-            ax.set_title("Fortschritt über die Zeit", color=text_color)
-            ax.text(0.5, 0.5, 'Keine Verlaufsdaten für diese Auswahl.', ha='center', va='center', color=text_color)
-            ax.set_yticks([])
-            ax.set_xticks([])
+            ax2.text(0.5, 0.5, 'Keine Verlaufsdaten für dieses Set.', ha='center', va='center', color=text_color)
+            ax2.set_yticks([])
+            ax2.set_xticks([])
+            ax2.set_facecolor(theme['bg'])
+            for spine in ax2.spines.values():
+                spine.set_visible(False)
+        
+        ax2.set_title("Fortschritt über die Zeit", color=text_color)
+
+        self.fig.tight_layout(pad=3.0)
+
+        canvas = FigureCanvasTkAgg(self.fig, parent)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
