@@ -911,6 +911,271 @@
                             "status": "new",
                             "next_review_at": 1751106326.1692123
                         }
+                    },
+                    {
+                        "name": "Aufgabe 1: Optimierung (SS 2021)",
+                        "beschreibung": "Der Automobilfabrikant Dingeldein stellt in zwei Werken Personenkraftwagen (PKW) und Lastkraftwagen (LKW) her. Im ersten Werk, in dem die grundlegenden Montagearbeiten durchgefuehrt werden, werden fuenf Mann-Tage pro LKW und zwei Mann-Tage pro PKW benoetigt. Im zweiten Werk, in dem die Endmontage erfolgt, sind pro PKW und pro LKW je drei Mann-Tage notwendig. Die Kapazitaet des ersten Werkes betraegt 180 und die des zweiten Werkes 135 Mann-Tage pro Woche. Wie viele PKW und LKW sollte der Fabrikant herstellen, um seinen Gewinn zu maximieren? Als weitere Information ist bekannt, dass der Fabrikant an einem LKW 3000 Geldeinheiten und an einem PKW 2000 Geldeinheiten verdient.",
+                        "tags": [],
+                        "bilder_aufgabe": [],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Formulieren Sie mathematisch das Optimierungsproblem so, dass der Gewinn des Unternehmens maximiert wird. (Zielfunktion + Nebenbedingungen)",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751116744_314_Bildschirmfoto_20250628_151859.png"
+                                ]
+                            },
+                            {
+                                "frage": "Ermitteln Sie rechnerisch mit dem Simplex-Algorithmus das Ergebnis des Optimierungsproblems.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751116722_556_Bildschirmfoto_20250628_151828.png"
+                                ]
+                            }
+                        ],
+                        "id": "51ec2a2a-52fc-4ac2-85ed-947d85042b2a",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {}
+                    },
+                    {
+                        "name": "Aufgabe 2: Spannungshaltung (SS 2021)",
+                        "beschreibung": "Am Ende eines l = 12 km langen 20-kV-Mittelspannungskabels vom Typ NA2XSY 3x150 mm^2 (R'_L = 0,208 Ohm/km, X'_L = 0,104 Ohm/km) wird eine Photovoltaik-Freiflaechenanlage (Solarpark) mit einer Nennleistung von S_N = 5 MVA (dreiphasig) angeschlossen. Es soll nun abgeschaetzt werden, ob es zu Spannungsbandverletzungen kommt. Der Solarpark verhaelt sich am Netz gemaess Abbildung 1 und speist mit maximaler Wirkleistung ein.  Weitere Einspeiser sind nicht vorhanden. Die Lasten, die an der Mittelspannungsleitung angeschlossen sind, sollen vernachlaessigt werden.",
+                        "tags": [],
+                        "bilder_aufgabe": [
+                            null
+                        ],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Zeichnen Sie das einphasige Ersatzschaltbild, beschriften Sie es vollstaendig und bestimmen Sie die Leitungsparameter.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751116837_929_Bildschirmfoto_20250628_152031.png"
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie den Winkel der komplexen Scheinleistung sowie die einphasige Wirk- und Blindleistung des Solarparks (im Verbraucherzaehlpfeilsystem).",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751116868_423_Bildschirmfoto_20250628_152103.png"
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie nach der exakten Methode den relativen Spannungshub Delta u_SP am Netzverknuepfungspunkt des Solarparks.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751116913_468_Bildschirmfoto_20250628_152144.png"
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie naeherungsweise den relativen Spannungshub am Netzverknuepfungspunkt des Solarparks. Bestimmen Sie hierzu als erstes den komplexen Strom, mit dem der Solarpark einspeist. (unabhaengig von b) loesbar).",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751116944_327_Bildschirmfoto_20250628_152217.png"
+                                ]
+                            }
+                        ],
+                        "id": "53bc983f-7872-4af0-8b7b-0639d3abafdc",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {}
+                    },
+                    {
+                        "name": "Aufgabe 3: Thermische Betrachtungen (SS 2021)",
+                        "beschreibung": "Betrachtet wird ein Leiterseil einer 400-kV-Freileitung vom Typ Al St 240/40. Es soll ermittelt werden, wie stark das Leiterseil bei einer gegebenen Umgebungstemperatur ueberlastet werden kann. Es wird vereinfachend von voelliger Windstille und verstaerkter Sonneneinstrahlung ausgegangen. Ferner sind der thermische und der elektrische Widerstand des Leiterseils als konstant anzusehen.",
+                        "tags": [],
+                        "bilder_aufgabe": [
+                            null
+                        ],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Zeichnen Sie das thermische Ersatzschaltbild des Leiterseils und beschriften Sie es vollstaendig.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117120_646_Bildschirmfoto_20250628_152515.png"
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie die laengenbezogene Waermekapazitaet C'_th des Leiterseils.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117102_373_Bildschirmfoto_20250628_152454.png"
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie den laengenbezogenen elektrischen Widerstand R'_el des Leiterseils.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117160_201_Bildschirmfoto_20250628_152551.png"
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie den laengenbezogenen thermischen Widerstand R'_th im Referenzfall.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117197_766_Bildschirmfoto_20250628_152623.png"
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie die thermische Zeitkonstante tau_th des Leiterseils.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117224_711_Bildschirmfoto_20250628_152658.png"
+                                ]
+                            },
+                            {
+                                "frage": "Ermitteln Sie die maximale Strombelastbarkeit I_z des Leiterseils, die sich bei einer Aussentemperatur von T_U = 5 Grad C und Referenzsolareinstrahlung ergibt.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117257_971_Bildschirmfoto_20250628_152716.png"
+                                ]
+                            }
+                        ],
+                        "id": "e38ff189-aa55-4cb6-93fc-b5a3756feee4",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {}
+                    },
+                    {
+                        "name": "Aufgabe 1: Optimierung (SS 2022)",
+                        "beschreibung": "Ein Landwirt moechte 40 Hektar mit Zuckerrueben und Weizen bepflanzen. Er hat hierfuer 2.400 Euro und 312 Arbeitstage zur Verfuegung. Fuer jeden Hektar belaufen sich seine Anpflanzungskosten auf 40 Euro fuer Zuckerrueben und auf 120 Euro fuer Weizen. Fuer Zuckerrueben benoetigt er 6 Arbeitstage pro Hektar und fuer Weizen 12 Arbeitstage pro Hektar. Der Gewinn belaeuft sich auf 100 Euro pro Hektar fuer Zuckerrueben und auf 250 Euro pro Hektar fuer Weizen.",
+                        "tags": [],
+                        "bilder_aufgabe": [],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Formulieren Sie mathematisch das Optimierungsproblem so, dass der Gewinn des Landwirts maximiert wird. (Zielfunktion + Nebenbedingungen)",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117352_696_Bildschirmfoto_20250628_152906.png"
+                                ]
+                            },
+                            {
+                                "frage": "Ermitteln Sie rechnerisch mit dem Simplex-Algorithmus das Ergebnis des Optimierungsproblems.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117402_404_Bildschirmfoto_20250628_152953.png"
+                                ]
+                            }
+                        ],
+                        "id": "b2a97a04-a536-4d24-949a-91cf799a67d6",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {}
+                    },
+                    {
+                        "name": "Aufgabe 3: Thermische Betrachtungen (SS 2022)",
+                        "beschreibung": "Betrachtet wird ein symmetrisch belastetes Niederspannungskabel vom Typ NAYY 4x150 mm^2. Es soll ermittelt werden, wie stark das Erdkabel bei einer gegebenen Umgebungstemperatur und Dauerbelastung ueberlastet werden kann. Der thermische und elektrische Widerstand des Kabels sind als konstant anzusehen. Das Kabel ist thermisch als ein homogener Koerper zu betrachten.",
+                        "tags": [],
+                        "bilder_aufgabe": [
+                            null
+                        ],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Zeichnen Sie das thermische Ersatzschaltbild des Kabels und beschriften Sie es vollstaendig.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117479_982_Bildschirmfoto_20250628_153115.png"
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie die laengenbezogene Waermekapazitaet C'_th des Kabels.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117510_786_Bildschirmfoto_20250628_153146.png"
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie den laengenbezogenen elektrischen Widerstand R'_el des Kabels fuer den Referenzfall.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117553_800_Bildschirmfoto_20250628_153223.png"
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie den laengenbezogenen thermischen Widerstand R'_th des Kabels fuer den Referenzfall.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117587_694_Bildschirmfoto_20250628_153301.png"
+                                ]
+                            },
+                            {
+                                "frage": "Bestimmen Sie die thermische Zeitkonstante tau_th des Kabels.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117630_362_Bildschirmfoto_20250628_153343.png"
+                                ]
+                            },
+                            {
+                                "frage": "Ermitteln Sie die maximale Dauerstrombelastbarkeit I_z des Kabels, die sich bei einer Umgebungstemperatur von T_U = 10 Grad C ergibt. Berechnen Sie hierfuer auch die prozentuale Ueberlast des Kabels.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117661_685_Bildschirmfoto_20250628_153415.png"
+                                ]
+                            }
+                        ],
+                        "id": "bac2d06d-38b6-4d57-b733-b91a8df1df1c",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {}
+                    },
+                    {
+                        "name": "Aufgabe 5: Zustandsschaetzung (SS 2022)",
+                        "beschreibung": "Betrachtet wird die Schaltung in Abbildung 2. Der Strom sowie die Leistung am Eingang (1) werden gemessen (Verbraucherzaehlpfeilsystem): I^m = 2 A und P_1^m = -36 W. Die Spannung am Eingang ist mit U_1 = 20 V und der Widerstand mit R = 2 Ohm gegeben. Nachfolgend soll die Spannung U_2 am Ausgang geschaetzt werden.",
+                        "tags": [],
+                        "bilder_aufgabe": [
+                            "images/1751117751_417_Bildschirmfoto_20250628_153545.png"
+                        ],
+                        "unteraufgaben": [
+                            {
+                                "frage": "Schaetzen Sie die Ausgangsspannung auf Basis der Strommessung, d. h. ohne die gemessene Eingangsleistung.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117785_349_Bildschirmfoto_20250628_153616.png"
+                                ]
+                            },
+                            {
+                                "frage": "Schaetzen Sie die Ausgangsspannung auf Basis der gemessenen Eingangsleistung, d. h. ohne die Strommessung.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117814_858_Bildschirmfoto_20250628_153646.png"
+                                ]
+                            },
+                            {
+                                "frage": "Berechnen Sie die Redundanz eta der Schaetzung.",
+                                "loesung": "eta = 2",
+                                "bilder_loesung": []
+                            },
+                            {
+                                "frage": "Geben Sie die Funktionen der Messmodelle I = f_1(U_2) und P_1 = f_2(U_2) an.",
+                                "loesung": "",
+                                "bilder_loesung": []
+                            },
+                            {
+                                "frage": "Geben Sie die Fehlerfunktion G(U_2) an, die der Schaetzer minimiert.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751117920_193_Bildschirmfoto_20250628_153811.png"
+                                ]
+                            },
+                            {
+                                "frage": "Ermitteln Sie die Ableitung der Fehlerfunktion: g(U_2) = dG(U_2)/dU_2.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751118010_329_Bildschirmfoto_20250628_154004.png"
+                                ]
+                            },
+                            {
+                                "frage": "Ermitteln Sie die Schaetzfunktion U_dach_2(I^m, P_1^m) und bestimmen Sie den Schaetzwert U_dach_2 anhand der beiden Messwerte.",
+                                "loesung": "",
+                                "bilder_loesung": [
+                                    "images/1751118042_243_Bildschirmfoto_20250628_154034.png"
+                                ]
+                            }
+                        ],
+                        "id": "6619dcc8-a441-4a0d-9a13-f498fcb3b473",
+                        "history": [],
+                        "rating": 0,
+                        "sm_data": {}
                     }
                 ]
             }
