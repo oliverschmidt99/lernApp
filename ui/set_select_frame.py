@@ -6,7 +6,9 @@ from functools import partial
 
 # Relative Importe aus dem ui-Paket
 from .base_frames import BasePage
-# KORREKTUR: Alle Frame-übergreifenden Imports werden entfernt und in die Methoden verschoben
+from .edit_set_frame import EditSetFrame
+from .quiz_frame import QuizFrame
+from .statistics_frame import StatisticsFrame
 from . import custom_dialogs
 
 # Absolute Importe
@@ -18,18 +20,18 @@ class SetSelectFrame(BasePage):
     def __init__(self, parent, controller, subject_id):
         self.init_args = {"subject_id": subject_id}
         super().__init__(parent, controller)
-        
+
         self.subject_id = subject_id
         if subject_id not in self.controller.data:
             from .start_frame import StartFrame
             controller.show_frame(StartFrame)
             return
-            
+
         self.subject_data = self.controller.data[subject_id]
         self.set_nav_title(f"Lernsets in: {self.subject_data['name']}")
         self.add_nav_button("← Zurück zu den Fächern", self.go_to_start_frame)
         self.add_nav_button("Neues Lernset", self.create_set_popup)
-        
+
         # Geteilte Ansicht
         paned_window = ttk.PanedWindow(self.content_frame, orient=tk.HORIZONTAL)
         paned_window.pack(fill=tk.BOTH, expand=True)
@@ -37,16 +39,16 @@ class SetSelectFrame(BasePage):
         # --- Linke Spalte (Kachelansicht der Lernsets) ---
         left_frame = ttk.Frame(paned_window, width=350)
         paned_window.add(left_frame, weight=1)
-        
+
         # Canvas für scrollbare Kacheln
         self.canvas = tk.Canvas(left_frame, borderwidth=0, highlightthickness=0, bg=constants.THEMES[controller.current_theme.get()]["bg"])
         self.scrollbar = ttk.Scrollbar(left_frame, orient="vertical", command=self.canvas.yview)
         self.tiles_frame = ttk.Frame(self.canvas)
-        
+
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side="right", fill="y")
         self.canvas.pack(side="left", fill="both", expand=True)
-        
+
         self.canvas.create_window((0, 0), window=self.tiles_frame, anchor="nw")
         self.tiles_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         utils.bind_mouse_scroll(self, self.canvas)
@@ -54,7 +56,7 @@ class SetSelectFrame(BasePage):
         # --- Rechte Spalte (Container für Statistiken) ---
         self.statistics_container = ttk.Frame(paned_window)
         paned_window.add(self.statistics_container, weight=2)
-        
+
         self.refresh_view()
         self.show_placeholder()
 
@@ -66,34 +68,34 @@ class SetSelectFrame(BasePage):
         """Zeichnet die Lernset-Kacheln auf der linken Seite neu."""
         for widget in self.tiles_frame.winfo_children():
             widget.destroy()
-        
+
         self.sets_data = sorted(
             self.subject_data.get("sets", {}).items(),
             key=lambda item: item[1].get('name', '').lower()
         )
-        
-        row, col = 0, 0 
+
+        row, col = 0, 0
 
         for set_id, sdata in self.sets_data:
             card_color = sdata.get("color", constants.DEFAULT_COLOR)
             text_color = utils.get_readable_text_color(card_color)
-            
+
             card = tk.Frame(self.tiles_frame, relief="raised", borderwidth=1, bg=card_color)
             card.grid(row=row, column=col, padx=10, pady=10, sticky="ew")
             self.tiles_frame.grid_columnconfigure(col, weight=1)
 
             title = ttk.Label(card, text=sdata.get("name"), style="CardTitle.TLabel", background=card_color, foreground=text_color)
             title.pack(anchor="w", padx=10, pady=(10, 0))
-            
+
             stats = ttk.Label(card, text=f"{len(sdata.get('tasks',[]))} Karten", style="CardStats.TLabel", background=card_color, foreground=text_color)
             stats.pack(anchor="w", padx=10, pady=(0, 10))
 
             for widget in [card, title, stats]:
                 widget.bind("<Button-1>", lambda e, sid=set_id: self.load_statistics_for_set(sid))
                 widget.bind("<Button-3>", lambda e, sid=set_id: self.create_context_menu(e, sid))
-            
+
             row += 1
-        
+
         utils.bind_mouse_scroll(self.tiles_frame, self.canvas)
 
     def load_statistics_for_set(self, set_id):
@@ -101,7 +103,7 @@ class SetSelectFrame(BasePage):
         from .statistics_frame import StatisticsFrame
         for widget in self.statistics_container.winfo_children():
             widget.destroy()
-        
+
         stats_frame = StatisticsFrame(self.statistics_container, self.controller, self.subject_id, set_id)
         stats_frame.pack(fill="both", expand=True)
 
@@ -133,6 +135,76 @@ class SetSelectFrame(BasePage):
             self.controller.data_manager.save_data(self.controller.data)
             self.refresh_view()
 
+    def _start_quiz(self, popup, set_id, mode, session_size=None):
+        popup.destroy()
+        callback = partial(self.controller.show_frame, QuizFrame, subject_id=self.subject_id, set_id=set_id, mode=mode, session_size=session_size)
+        self.after(20, callback)
+
+    def _edit_set(self, set_id):
+        callback = partial(self.controller.show_frame, EditSetFrame, subject_id=self.subject_id, set_id=set_id)
+        self.after(20, callback)
+
+    def _show_stats(self, set_id):
+        self.load_statistics_for_set(set_id)
+
+    def _show_session_size_prompt(self, set_id):
+        """Zeigt einen Dialog zur Auswahl der Sitzungsgröße."""
+        tasks = self.subject_data["sets"][set_id].get("tasks", [])
+
+        # KORREKTUR: Initialisiert die Lern-Daten, bevor sie verwendet werden.
+        now = time.time()
+        for task in tasks:
+            sm_data = task.setdefault('sm_data', {})
+            sm_data.setdefault('status', 'new')
+            sm_data.setdefault('next_review_at', now)
+
+        due_tasks = [t for t in tasks if t['sm_data']['next_review_at'] <= now and t['sm_data']['status'] not in ['mastered', 'perfect']]
+        num_due_tasks = len(due_tasks)
+
+        if num_due_tasks == 0:
+            messagebox.showinfo("Keine Karten fällig", "Super! Es stehen aktuell keine Karten zur Wiederholung an.")
+            return
+
+        prompt = tk.Toplevel(self)
+        prompt.title("Sitzungsgröße")
+        prompt.transient(self)
+
+        bg_color = constants.THEMES[self.controller.current_theme.get()]["bg"]
+        prompt.config(bg=bg_color)
+
+        ttk.Label(prompt, text=f"Wie viele der {num_due_tasks} fälligen Karten möchtest du lernen?", padding=15).pack()
+
+        slider_var = tk.IntVar(value=min(10, num_due_tasks))
+
+        value_frame = ttk.Frame(prompt, padding=(0,0,0,10))
+        value_frame.pack()
+
+        value_label = ttk.Label(value_frame, text=f"{slider_var.get()}", font=("Helvetica", 14, "bold"))
+        value_label.pack()
+
+        def update_label(value):
+            value_label.config(text=f"{int(float(value))}")
+
+        slider = ttk.Scale(prompt, from_=1, to=num_due_tasks, variable=slider_var, command=update_label, orient='horizontal')
+        slider.pack(fill='x', expand=True, padx=20)
+
+        btn_frame = ttk.Frame(prompt, padding=10)
+        btn_frame.pack()
+
+        def start():
+            session_size = slider_var.get()
+            popup_to_close = self.winfo_toplevel()
+            prompt.destroy()
+            self._start_quiz(popup_to_close, set_id, 'spaced_repetition', session_size=session_size)
+
+        ttk.Button(btn_frame, text="Lernsitzung starten", command=start).pack(pady=5)
+
+        prompt.update_idletasks()
+        x = self.winfo_toplevel().winfo_x() + (self.winfo_toplevel().winfo_width() // 2) - (prompt.winfo_width() // 2)
+        y = self.winfo_toplevel().winfo_y() + (self.winfo_toplevel().winfo_height() // 2) - (prompt.winfo_height() // 2)
+        prompt.geometry(f"+{x}+{y}")
+        prompt.grab_set()
+
     def _reset_set_progress(self, set_id):
         set_name = self.subject_data["sets"][set_id]["name"]
         message = f"Möchtest du wirklich den gesamten Lernfortschritt für das Set '{set_name}' zurücksetzen?"
@@ -147,6 +219,7 @@ class SetSelectFrame(BasePage):
             self.controller.data_manager.save_data(self.controller.data)
             messagebox.showinfo("Erfolg", f"Der Fortschritt für '{set_name}' wurde zurückgesetzt.")
             self.load_statistics_for_set(set_id)
+
 
     def rename_item(self, set_id):
         old_name = self.subject_data["sets"][set_id]["name"]
