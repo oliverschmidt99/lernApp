@@ -16,8 +16,8 @@ class CustomAskString(simpledialog.Dialog):
         """Erstellt den Hauptteil des Dialogs."""
         theme_name = self.controller.current_theme.get()
         colors = constants.THEMES[theme_name]
-        
-        # KORREKTUR: Stellt sicher, dass das gesamte Dialogfenster die Theme-Farbe erhält.
+
+        # Stellt sicher, dass das gesamte Dialogfenster die Theme-Farbe erhält.
         self.config(bg=colors['bg'])
         master.config(bg=colors['bg'])
 
@@ -25,13 +25,13 @@ class CustomAskString(simpledialog.Dialog):
         self.label.pack(pady=(10, 5), padx=10)
         self.entry = ttk.Entry(master, width=40)
         self.entry.pack(pady=(0, 10), padx=10)
-        
-        return self.entry 
+
+        return self.entry
 
     def buttonbox(self):
         """Erstellt die OK- und Abbrechen-Buttons."""
         box = ttk.Frame(self)
-        
+
         w = ttk.Button(box, text="OK", width=10, command=self.ok, default=tk.ACTIVE)
         w.pack(side=tk.LEFT, padx=5, pady=5)
         w = ttk.Button(box, text="Abbrechen", width=10, command=self.cancel)
@@ -48,5 +48,6 @@ class CustomAskString(simpledialog.Dialog):
 
 # Eine Hilfsfunktion, um den neuen Dialog einfacher aufzurufen
 def ask_string_themed(parent, title, prompt, controller):
+    """Zeigt einen benutzerdefinierten Dialog an, der das App-Theme verwendet."""
     dialog = CustomAskString(parent, title=title, prompt=prompt, controller=controller)
     return dialog.result

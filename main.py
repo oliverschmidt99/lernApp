@@ -59,19 +59,21 @@ class LernApp(TkinterDnD.Tk):
                 if not isinstance(set_data, dict): continue
                 for task in set_data.get("tasks", []):
                     if not isinstance(task, dict): continue
-                    
+
+                    # Migriert Aufgabenbilder
                     if 'bilder_aufgabe' not in task and 'bild_aufgabe' in task:
                         single_image = task.pop('bild_aufgabe', None)
                         task['bilder_aufgabe'] = [single_image] if single_image else []
                         needs_saving = True
-                    
+
+                    # Migriert Lösungsbilder in Unteraufgaben
                     for subtask in task.get("unteraufgaben", []):
                          if not isinstance(subtask, dict): continue
                          if 'bilder_loesung' not in subtask and 'bild_loesung' in subtask:
                             single_image = subtask.pop('bild_loesung')
                             subtask['bilder_loesung'] = [single_image] if single_image else []
                             needs_saving = True
-        
+
         if needs_saving:
             migrated_data["settings"]["data_version"] = 2
             self.data = migrated_data
@@ -94,9 +96,9 @@ class LernApp(TkinterDnD.Tk):
         self.style.configure("TLabel", background=colors["bg"], foreground=colors["fg"])
         self.style.configure("TButton", padding=6, relief="flat", background=colors["button_bg"], foreground=colors["fg"])
         self.style.map("TButton", background=[("active", colors["fg"])], foreground=[("active", colors["bg"])])
-        
+
         self.style.configure("TEntry", fieldbackground=colors["text_bg"], insertcolor=colors["fg"], foreground=colors["fg"])
-        
+
         self.style.configure("Danger.TButton", background=colors["danger_bg"], foreground=colors["danger_fg"])
         self.style.map("Danger.TButton", background=[("active", colors["fg"])], foreground=[("active", colors["bg"])])
 
@@ -107,14 +109,14 @@ class LernApp(TkinterDnD.Tk):
         self.style.configure("TLabelframe.Label", background=colors["bg"], foreground=colors["fg"])
         self.style.configure("Nav.TFrame", background=colors["nav_bg"])
 
-        # KORREKTUR: Globale Definition der Stile für Feedback-Buttons
+        # Globale Definition der Stile für Feedback-Buttons
         if theme_name == "dark":
             fg_color = feedback_colors['foreground']
             self.style.configure("Bad.TButton", background=feedback_colors['bad'], foreground=fg_color, padding=6, relief="flat")
             self.style.configure("OK.TButton", background=feedback_colors['ok'], foreground=fg_color, padding=6, relief="flat")
             self.style.configure("Good.TButton", background=feedback_colors['good'], foreground=fg_color, padding=6, relief="flat")
             self.style.configure("Perfect.TButton", background=feedback_colors['perfect'], foreground=fg_color, padding=6, relief="flat")
-        else:
+        else: # Light theme
             self.style.configure("Bad.TButton", background=feedback_colors['bad'], foreground=utils.get_readable_text_color(feedback_colors['bad']), padding=6, relief="flat")
             self.style.configure("OK.TButton", background=feedback_colors['ok'], foreground=utils.get_readable_text_color(feedback_colors['ok']), padding=6, relief="flat")
             self.style.configure("Good.TButton", background=feedback_colors['good'], foreground=utils.get_readable_text_color(feedback_colors['good']), padding=6, relief="flat")
@@ -142,7 +144,7 @@ class LernApp(TkinterDnD.Tk):
         """Zerstört den aktuellen Frame und zeigt einen neuen an."""
         for widget in self.container.winfo_children():
             widget.destroy()
-        
+
         frame = FrameClass(self.container, self, *args, **kwargs)
         frame.pack(fill="both", expand=True)
         return frame

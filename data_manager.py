@@ -4,13 +4,14 @@ import time
 import random
 import shutil
 
-# Importiert die Konstante IMAGE_DIR aus unserer neuen constants.py Datei
+# Importiert die Konstante IMAGE_DIR aus der constants.py Datei
 from constants import IMAGE_DIR
 
 class DataManager:
     """Verwaltet das Laden und Speichern der JSON-Daten sowie das Kopieren von Bildern."""
     def __init__(self, filename):
         self.filename = filename
+        # Stellt sicher, dass der Bild-Ordner existiert
         if not os.path.exists(IMAGE_DIR):
             os.makedirs(IMAGE_DIR)
 
@@ -35,11 +36,11 @@ class DataManager:
         """
         if not image_path or not os.path.exists(image_path):
             return None
-            
+
         # Verhindert das erneute Kopieren, wenn das Bild bereits im Datenspeicher ist
         if os.path.dirname(os.path.abspath(image_path)) == os.path.abspath(IMAGE_DIR):
             return image_path
-            
+
         filename = os.path.basename(image_path)
         # Erzeugt einen einzigartigen Dateinamen, um Überschreibungen zu vermeiden
         unique_filename = f"{int(time.time())}_{random.randint(100,999)}_{filename}"

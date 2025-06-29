@@ -5,19 +5,20 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from PIL import Image
 
-# KORREKTUR: Ein Set, um bereits gebundene Widgets zu speichern und Doppelungen zu vermeiden.
+# Ein Set, um bereits gebundene Widgets zu speichern und Doppelungen zu vermeiden.
 _already_bound = set()
 
 def render_latex(formula, fontsize=12, dpi=300, fg='black', bg='white'):
     """Rendert eine LaTeX-Formel in ein Pillow-Bildobjekt."""
     try:
+        # Ersetzungen für eine bessere Kompatibilität
         formula = formula.replace('\\le', '\\leq').replace('\\ge', '\\geq').replace('\\implies', '\\Rightarrow').replace('\\text', '\\mathrm')
         fig = Figure(figsize=(4, 1), dpi=dpi, facecolor=bg)
         fig.text(0, 0, f"${formula}$", usetex=False, fontsize=fontsize, color=fg)
 
         buf = io.BytesIO()
         fig.savefig(buf, format='png', transparent=False, bbox_inches='tight', pad_inches=0.05, facecolor=bg)
-        plt.close(fig)
+        plt.close(fig) # Wichtig: Schließt die Figur, um Speicherlecks zu vermeiden
         buf.seek(0)
         img = Image.open(buf)
         return img
@@ -43,12 +44,13 @@ def bind_mouse_scroll(widget_to_bind, canvas_to_scroll):
     um einen bestimmten Canvas zu scrollen. Verhindert doppelte Bindungen.
     """
     def _on_mousewheel(event):
+        # Passt die Scroll-Geschwindigkeit und -Richtung für verschiedene Plattformen an
         if event.num == 5 or event.delta < 0:
             canvas_to_scroll.yview_scroll(1, "units")
         elif event.num == 4 or event.delta > 0:
             canvas_to_scroll.yview_scroll(-1, "units")
 
-    # KORREKTUR: Prüft, ob das Widget bereits gebunden wurde.
+    # Prüft, ob das Widget bereits gebunden wurde.
     if widget_to_bind not in _already_bound:
         widget_to_bind.bind("<MouseWheel>", _on_mousewheel)
         widget_to_bind.bind("<Button-4>", _on_mousewheel)

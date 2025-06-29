@@ -51,17 +51,17 @@ class BaseTileFrame(BasePage):
         self.canvas = tk.Canvas(self.content_frame, borderwidth=0, highlightthickness=0, bg=bg_color)
         self.scrollbar = ttk.Scrollbar(self.content_frame, orient="vertical", command=self.canvas.yview)
         self.tiles_frame = ttk.Frame(self.canvas)
-        
+
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side="right", fill="y")
         self.canvas.pack(side="left", fill="both", expand=True)
-        
+
         self.canvas.create_window((0, 0), window=self.tiles_frame, anchor="nw")
         self.tiles_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        
-        # KORREKTUR: Bindet das Scroll-Event an den gesamten Inhaltsbereich, nicht nur die Kacheln.
+
+        # Bindet das Scroll-Event an den gesamten Inhaltsbereich, nicht nur die Kacheln.
         utils.bind_mouse_scroll(self.content_frame, self.canvas)
-        
+
     def create_context_menu(self, event, item_id, item_type):
         """Erstellt ein Kontextmenü für Kacheln (Rechtsklick)."""
         menu = tk.Menu(self, tearoff=0)
@@ -75,7 +75,7 @@ class BaseTileFrame(BasePage):
         menu.tk_popup(event.x_root, event.y_root)
 
     # Platzhalter-Methoden, die in den Unterklassen implementiert werden müssen
-    def change_item_color(self, item_id, item_type, hex_code): pass
     def rename_item(self, item_id, item_type): pass
+    def change_item_color(self, item_id, item_type, hex_code): pass
     def delete_item(self, item_id, item_type): pass
     def refresh_view(self): pass

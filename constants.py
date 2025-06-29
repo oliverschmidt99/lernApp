@@ -17,6 +17,17 @@ STATUS_COLORS = {
     "perfect": "#64B5F6"   # Hellblau
 }
 
+# Lernintervalle für Spaced Repetition in Tagen
+STATUS_INTERVALS = {
+    "new": 0,
+    "bad": 0,
+    "ok": 1,
+    "good": 3,
+    "mastered": 7,
+    "perfect": 30
+}
+
+
 FEEDBACK_COLORS = {
     "light": {
         "bad": STATUS_COLORS["bad"],

@@ -10,20 +10,7 @@ import datetime
 
 from .base_frames import BasePage
 import utils
-import constants
-
-# Lernintervalle und Farben für Spaced Repetition
-STATUS_COLORS = {
-    "new": "grey", "bad": "#E57373", "ok": "#FFD54F",
-    "good": "#81C784", "mastered": "#2E7D32", "perfect": "#64B5F6"
-}
-STATUS_COLORS_DARK_BUTTON = {
-    "bad": "#C62828", "ok": "#FF8F00", "good": "#2E7D32",
-    "perfect": "#1565C0", "foreground": "#FFFFFF"
-}
-STATUS_INTERVALS = {
-    "new": 0, "bad": 0, "ok": 1, "good": 3, "mastered": 7, "perfect": 30
-}
+import constants # Importiert die zentrale Konstantendatei
 
 class ProgressIndicator(ttk.Frame):
     """Ein visueller Fortschrittsbalken, der den Lernstatus der Karten als Kreise anzeigt."""
@@ -38,18 +25,21 @@ class ProgressIndicator(ttk.Frame):
         self.canvas.bind("<Configure>", self.update_progress)
 
     def update_progress(self, event=None):
+        """Zeichnet den Fortschrittsbalken basierend auf dem aktuellen Zustand der Aufgaben."""
         self.canvas.delete("all")
         if not self.display_tasks: return
 
+        # Trennt Karten in "gelernt" und "zu lernen"
         mastered_tasks = [t for t in self.display_tasks if t.get('sm_data', {}).get('status') in ['mastered', 'perfect']]
         learning_tasks = [t for t in self.display_tasks if t.get('sm_data', {}).get('status') not in ['mastered', 'perfect']]
 
+        # Verschiebt die aktuelle Karte an den Anfang der "zu lernen"-Liste
         try:
             current_task_index = next(i for i, t in enumerate(learning_tasks) if t.get('id') == self.current_task_id)
             current_task_obj = learning_tasks.pop(current_task_index)
             learning_tasks.insert(0, current_task_obj)
         except StopIteration:
-            pass
+            pass # Aktuelle Karte nicht in der Lernliste (z.B. wenn sie die letzte war)
 
         ordered_tasks = mastered_tasks + learning_tasks
 
@@ -58,21 +48,23 @@ class ProgressIndicator(ttk.Frame):
         num_tasks = len(ordered_tasks)
         if num_tasks == 0: return
 
+        # Berechnet die Größe und Position der Kreise
         diameter = min(canvas_height - 6, 18)
         padding = 6
         total_width_needed = num_tasks * (diameter + padding)
 
         start_x = padding
         if total_width_needed < canvas_width:
-             start_x = (canvas_width - total_width_needed) / 2
+             start_x = (canvas_width - total_width_needed) / 2 # Zentriert die Kreise
 
         y0 = (canvas_height - diameter) / 2
         y1 = y0 + diameter
 
         for i, task in enumerate(ordered_tasks):
             status = task.get('sm_data', {}).get('status', 'new')
-            color = STATUS_COLORS.get(status, "grey")
+            color = constants.STATUS_COLORS.get(status, "grey")
 
+            # Hebt die aktuelle Karte mit einem dickeren Rand hervor
             outline_color = color
             outline_width = 1
             if self.current_task_id and task.get('id') == self.current_task_id:
@@ -91,7 +83,7 @@ class ImageGallery(ttk.Frame):
         self.image_paths = [path for path in image_paths if path and os.path.exists(path)]
         self.theme_colors = theme_colors
         self.current_image_index = 0
-        self._photo_references = []
+        self._photo_references = [] # Wichtig, um Referenzen auf die Bilder zu halten
 
         if not self.image_paths: return
 
@@ -113,13 +105,13 @@ class ImageGallery(ttk.Frame):
         self.show_image()
 
     def open_fullscreen_view(self, event=None):
+        """Öffnet das aktuell angezeigte Bild in einem großen Popup-Fenster."""
         if not self.image_paths: return
         path = self.image_paths[self.current_image_index]
 
         popup = tk.Toplevel(self)
         popup.title(os.path.basename(path))
         popup.configure(bg=self.theme_colors['bg'])
-
         popup.bind("<Escape>", lambda e: popup.destroy())
 
         close_button = ttk.Button(popup, text="X", command=popup.destroy, style="Danger.TButton")
@@ -130,18 +122,16 @@ class ImageGallery(ttk.Frame):
             screen_width = self.winfo_screenwidth() * 0.8
             screen_height = self.winfo_screenheight() * 0.8
             img.thumbnail((screen_width, screen_height), Image.Resampling.LANCZOS)
-
             photo = ImageTk.PhotoImage(img)
 
             img_label_popup = ttk.Label(popup, image=photo)
-            img_label_popup.image = photo
+            img_label_popup.image = photo # Referenz behalten
             img_label_popup.pack(padx=20, pady=(0, 20), expand=True, fill="both")
 
             popup.update_idletasks()
             x = self.winfo_toplevel().winfo_x() + (self.winfo_toplevel().winfo_width() // 2) - (popup.winfo_width() // 2)
             y = self.winfo_toplevel().winfo_y() + (self.winfo_toplevel().winfo_height() // 2) - (popup.winfo_height() // 2)
             popup.geometry(f"+{int(x)}+{int(y)}")
-
         except Exception as e:
             popup.destroy()
             messagebox.showerror("Fehler", f"Bild konnte nicht geladen werden:\n{e}")
@@ -150,6 +140,7 @@ class ImageGallery(ttk.Frame):
         popup.grab_set()
 
     def show_image(self):
+        """Zeigt das Bild am aktuellen Index in der Galerie an."""
         if not self.image_paths: return
         path = self.image_paths[self.current_image_index]
         try:
@@ -164,10 +155,11 @@ class ImageGallery(ttk.Frame):
             self.image_label.config(text="Bild konnte nicht geladen werden.")
 
     def update_status(self):
+        """Aktualisiert die Statusanzeige (z.B. 'Bild 1 / 3') und die Navigationsbuttons."""
         total_images = len(self.image_paths)
         if total_images > 1:
             self.status_label.config(text=f"Bild {self.current_image_index + 1} / {total_images}")
-            self.nav_frame.pack()
+            self.nav_frame.pack() # Zeigt Navigation nur bei mehreren Bildern
         else:
             self.nav_frame.pack_forget()
 
@@ -186,7 +178,10 @@ class ImageGallery(ttk.Frame):
 
 
 class QuizFrame(BasePage):
-    """Der Lernmodus. Implementiert zwei Lernstrategien."""
+    """
+    Der Lernmodus. Implementiert einen sequenziellen Modus und
+    einen Modus mit Spaced Repetition.
+    """
     def __init__(self, parent, controller, subject_id, set_id, mode, session_size=None):
         self.init_args = {"subject_id": subject_id, "set_id": set_id, "mode": mode, "session_size": session_size}
         super().__init__(parent, controller)
@@ -195,53 +190,47 @@ class QuizFrame(BasePage):
 
         self.all_tasks = self.controller.data[subject_id]["sets"][set_id].get("tasks", [])
 
-        self._setup_styles()
-
+        # Wählt die Lernstrategie basierend auf dem 'mode' Parameter
         if self.mode == 'sequential':
             self.task_queue = deque(self.all_tasks)
             self.set_nav_title("Lernmodus: Sequenziell")
-        else:
+        else: # 'spaced_repetition'
             self.task_queue = self._build_spaced_repetition_queue(session_size)
             self.set_nav_title("Lernmodus: Spaced Repetition")
 
         self.add_nav_button("← Beenden & Speichern", self.finish_quiz)
         self.load_next_question()
 
-    def _setup_styles(self):
-        s = ttk.Style()
-        theme = self.controller.current_theme.get()
-        colors = constants.FEEDBACK_COLORS[theme]
-        fg_color = colors.get("foreground")
-
-        s.configure("Bad.TButton", background=colors['bad'], foreground=fg_color or utils.get_readable_text_color(colors['bad']), padding=6, relief="flat")
-        s.configure("OK.TButton", background=colors['ok'], foreground=fg_color or utils.get_readable_text_color(colors['ok']), padding=6, relief="flat")
-        s.configure("Good.TButton", background=colors['good'], foreground=fg_color or utils.get_readable_text_color(colors['good']), padding=6, relief="flat")
-        s.configure("Perfect.TButton", background=colors['perfect'], foreground=fg_color or utils.get_readable_text_color(colors['perfect']), padding=6, relief="flat")
-
     def _build_spaced_repetition_queue(self, session_size=None):
         """Erstellt eine priorisierte Warteschlange nur mit zu lernenden Karten."""
         now = time.time()
+        # Stellt sicher, dass alle Karten die notwendigen Lerndaten haben
         for task in self.all_tasks:
             task.setdefault('sm_data', {'status': 'new', 'next_review_at': now, 'consecutive_good': 0})
 
+        # Filtert Karten, die fällig und noch nicht gemeistert sind
         due_tasks = [t for t in self.all_tasks if t['sm_data']['next_review_at'] <= now and t['sm_data']['status'] not in ['mastered', 'perfect']]
 
         if not due_tasks: return deque()
 
-        due_tasks.sort(key=lambda t: STATUS_INTERVALS.get(t['sm_data']['status'], 0))
+        # Sortiert fällige Karten nach ihrem Status (neue/schlechte zuerst)
+        due_tasks.sort(key=lambda t: constants.STATUS_INTERVALS.get(t['sm_data']['status'], 0))
 
+        # Begrenzt die Sitzungsgröße, falls angegeben
         return deque(due_tasks[:session_size] if session_size else due_tasks)
 
     def _display_content(self, parent, text_content, image_paths):
+        """Rendert Text, LaTeX-Formeln und Bilder in einem Frame."""
         colors = constants.THEMES[self.controller.current_theme.get()]
         text_frame = ttk.Frame(parent)
         text_frame.pack(fill="x", anchor='nw', padx=5, pady=5)
+        # Teilt den Text in regulären Text und LaTeX-Teile ($...$)
         parts = re.split(r'(\$.*?\$)', text_content)
         current_line_frame = ttk.Frame(text_frame)
         current_line_frame.pack(fill="x", anchor='nw')
 
         for part in parts:
-            if part.startswith('$') and part.endswith('$'):
+            if part.startswith('$') and part.endswith('$'): # LaTeX-Formel
                 formula = part[1:-1]
                 bg_color = text_frame.cget('bg')
                 latex_img = utils.render_latex(formula, fg=colors['fg'], bg=bg_color)
@@ -249,12 +238,12 @@ class QuizFrame(BasePage):
                     photo = ImageTk.PhotoImage(latex_img)
                     self._photo_references.append(photo)
                     ttk.Label(current_line_frame, image=photo, background=bg_color).pack(side="left", anchor='nw', pady=2)
-            elif part:
+            elif part: # Regulärer Text
                 sub_parts = part.split('\n')
                 for i, sub_part in enumerate(sub_parts):
                     if sub_part:
                         ttk.Label(current_line_frame, text=sub_part, wraplength=750, justify=tk.LEFT).pack(side="left", anchor='nw')
-                    if i < len(sub_parts) - 1:
+                    if i < len(sub_parts) - 1: # Nach einem Zeilenumbruch eine neue Zeile beginnen
                         current_line_frame = ttk.Frame(text_frame)
                         current_line_frame.pack(fill="x", anchor='w')
         if image_paths:
@@ -262,6 +251,7 @@ class QuizFrame(BasePage):
             gallery.pack(pady=5)
 
     def load_next_question(self):
+        """Lädt die nächste Frage aus der Warteschlange."""
         self._photo_references.clear()
         if not self.task_queue:
             messagebox.showinfo("Fertig!", "Alle Aufgaben für diese Lernsitzung gemeistert!")
@@ -271,11 +261,13 @@ class QuizFrame(BasePage):
         self.build_ui_for_current_question()
 
     def build_ui_for_current_question(self):
+        """Baut die Benutzeroberfläche für die aktuell geladene Frage."""
         for widget in self.content_frame.winfo_children(): widget.destroy()
         if not self.current_task: return
 
         colors = constants.THEMES[self.controller.current_theme.get()]
 
+        # Erstellt die Liste der Aufgaben für den Fortschrittsbalken
         mastered_tasks = [t for t in self.all_tasks if t.get('sm_data', {}).get('status') in ['mastered', 'perfect']]
         learning_tasks = [self.current_task] + list(self.task_queue)
         display_tasks = mastered_tasks + learning_tasks
@@ -283,6 +275,7 @@ class QuizFrame(BasePage):
         self.progress_indicator = ProgressIndicator(self.content_frame, display_tasks, colors, current_task_id=self.current_task.get('id'))
         self.progress_indicator.pack(fill="x", pady=(0, 10))
 
+        # Haupt-Canvas für scrollbaren Inhalt
         self.main_canvas = tk.Canvas(self.content_frame, borderwidth=0, highlightthickness=0, bg=colors['bg'])
         scrollbar = ttk.Scrollbar(self.content_frame, orient="vertical", command=self.main_canvas.yview)
         main_frame = ttk.Frame(self.main_canvas)
@@ -295,11 +288,13 @@ class QuizFrame(BasePage):
         self.main_canvas.bind("<Configure>", lambda e: self.main_canvas.itemconfig(canvas_window, width=e.width))
         utils.bind_mouse_scroll(self, self.main_canvas)
 
+        # Zeigt die Hauptaufgabe an
         task_frame = ttk.LabelFrame(main_frame, text=self.current_task.get('name', 'Aufgabe'))
         task_frame.pack(fill="x", pady=10, padx=5)
         image_paths_task = self.current_task.get('bilder_aufgabe', [])
         self._display_content(task_frame, self.current_task['beschreibung'], image_paths_task)
 
+        # Zeigt Tags und Status an
         info_frame = ttk.Frame(task_frame)
         info_frame.pack(fill='x', anchor='w', padx=5, pady=5)
         tags = self.current_task.get('tags', [])
@@ -310,6 +305,7 @@ class QuizFrame(BasePage):
 
         self.subtask_solution_widgets = {}
 
+        # Zeigt die Teilaufgaben an
         for i, subtask in enumerate(self.current_task.get("unteraufgaben", [])):
             sub_frame = ttk.LabelFrame(main_frame, text=f"Teilaufgabe {chr(97 + i)}")
             sub_frame.pack(fill="x", padx=10, pady=5)
@@ -354,11 +350,11 @@ class QuizFrame(BasePage):
             utils.bind_mouse_scroll(container, self.main_canvas)
             widgets["container"] = container
 
-        self.update()
+        self.update() # Wichtig, damit die Scrollregion korrekt berechnet wird
         self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all"))
 
-
     def process_answer(self, quality):
+        """Verarbeitet die Antwort des Benutzers."""
         self.save_performance(quality)
         if self.mode == 'spaced_repetition':
             self.update_task_spaced_repetition(quality)
@@ -377,6 +373,7 @@ class QuizFrame(BasePage):
                 if quality == 'bad':
                     sm_data['status'] = 'bad'
                     sm_data['consecutive_good'] = 0
+                    # Fügt die Karte zur Wiederholung weiter hinten in die Warteschlange ein
                     if len(self.task_queue) >= 2:
                         self.task_queue.insert(2, self.current_task)
                     else:
@@ -384,7 +381,7 @@ class QuizFrame(BasePage):
                 elif quality == 'ok':
                     sm_data['status'] = 'ok'
                     sm_data['consecutive_good'] = 0
-                    self.task_queue.append(self.current_task)
+                    self.task_queue.append(self.current_task) # Wiederholt die Karte am Ende der Session
                 elif quality == 'good':
                     if current_status == 'good':
                         sm_data['status'] = 'mastered'
@@ -394,7 +391,8 @@ class QuizFrame(BasePage):
                 elif quality == 'perfect':
                     sm_data['status'] = 'perfect'
 
-                interval_days = STATUS_INTERVALS.get(sm_data['status'], 30)
+                # Berechnet das nächste Fälligkeitsdatum
+                interval_days = constants.STATUS_INTERVALS.get(sm_data['status'], 30)
                 next_review_date = datetime.datetime.now() + datetime.timedelta(days=interval_days)
                 sm_data['next_review_at'] = next_review_date.timestamp()
                 break
@@ -405,7 +403,6 @@ class QuizFrame(BasePage):
 
         for task in self.all_tasks:
             if task.get('id') == self.current_task.get('id'):
-                correct_count = 1 if quality != 'bad' else 0
                 history_entry = { "timestamp": time.time(), "quality": quality }
                 task.setdefault('history', []).append(history_entry)
                 break

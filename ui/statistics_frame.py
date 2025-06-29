@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.ticker import MaxNLocator
 import time
@@ -18,6 +19,7 @@ import constants
 class StatisticsFrame(ttk.Frame):
     """
     Zeigt die Statistiken und Aktionen für ein ausgewähltes Lernset an.
+    Wird jetzt direkt vom SetSelectFrame in dessen rechtem Bereich angezeigt.
     """
     def __init__(self, parent, controller, subject_id, set_id):
         super().__init__(parent)
@@ -35,6 +37,7 @@ class StatisticsFrame(ttk.Frame):
 
         ttk.Label(action_frame, text=set_name, font=("Helvetica", 16, "bold")).pack(side="left", padx=(0, 20))
 
+        # Buttons für Aktionen
         ttk.Button(action_frame, text="Lernen", command=self._show_learning_options_popup).pack(side="left", padx=5)
         ttk.Button(action_frame, text="Bearbeiten", command=self._edit_set).pack(side="left", padx=5)
         ttk.Button(action_frame, text="Fortschritt zurücksetzen", style="Danger.TButton", command=self._reset_set_progress).pack(side="left", padx=5)
@@ -48,12 +51,15 @@ class StatisticsFrame(ttk.Frame):
         self.update_plots()
 
     def _start_quiz(self, popup, mode, session_size=None):
+        """Startet den Quiz-Frame mit den gewählten Optionen."""
         if popup:
             popup.destroy()
+        # partial wird verwendet, um den show_frame-Aufruf mit Argumenten vorzubereiten
         callback = partial(self.controller.show_frame, QuizFrame, subject_id=self.subject_id, set_id=self.set_id, mode=mode, session_size=session_size)
-        self.after(20, callback)
+        self.after(20, callback) # Kurze Verzögerung für sauberen UI-Übergang
 
     def _edit_set(self):
+        """Öffnet den Bearbeitungs-Frame für dieses Set."""
         callback = partial(self.controller.show_frame, EditSetFrame, subject_id=self.subject_id, set_id=self.set_id)
         self.after(20, callback)
 
@@ -61,7 +67,7 @@ class StatisticsFrame(ttk.Frame):
         """Zeigt ein Popup zur Auswahl des Lernmodus."""
         popup = tk.Toplevel(self)
         popup.title("Lernmodus wählen")
-        popup.transient(self)
+        popup.transient(self) # Popup bleibt im Vordergrund
 
         content_frame = ttk.Frame(popup, padding=20)
         content_frame.pack(expand=True, fill='both')
@@ -74,6 +80,7 @@ class StatisticsFrame(ttk.Frame):
                    command=lambda: self._show_session_size_prompt(popup),
                    state="normal" if self.tasks else "disabled").pack(pady=5, fill='x')
 
+        # Zentriert das Popup
         popup.update_idletasks()
         x = self.winfo_toplevel().winfo_x() + (self.winfo_toplevel().winfo_width() // 2) - (popup.winfo_width() // 2)
         y = self.winfo_toplevel().winfo_y() + (self.winfo_toplevel().winfo_height() // 2) - (popup.winfo_height() // 2)
@@ -81,14 +88,15 @@ class StatisticsFrame(ttk.Frame):
         popup.grab_set()
 
     def _show_session_size_prompt(self, parent_popup):
-        """Zeigt einen Dialog zur Auswahl der Sitzungsgröße."""
-        # KORREKTUR: Initialisiert die Lern-Daten, bevor sie verwendet werden.
+        """Zeigt einen Dialog zur Auswahl der Sitzungsgröße für Spaced Repetition."""
         now = time.time()
+        # Stellt sicher, dass alle Karten die notwendigen Lerndaten haben
         for task in self.tasks:
             sm_data = task.setdefault('sm_data', {})
             sm_data.setdefault('status', 'new')
             sm_data.setdefault('next_review_at', now)
 
+        # Filtert nur die fälligen Karten heraus
         due_tasks = [t for t in self.tasks if t['sm_data']['next_review_at'] <= now and t['sm_data']['status'] not in ['mastered', 'perfect']]
         num_due_tasks = len(due_tasks)
 
@@ -97,6 +105,7 @@ class StatisticsFrame(ttk.Frame):
             parent_popup.destroy()
             return
 
+        # Erstellt den Dialog
         prompt = tk.Toplevel(self)
         prompt.title("Sitzungsgröße")
         prompt.transient(parent_popup)
@@ -106,11 +115,10 @@ class StatisticsFrame(ttk.Frame):
 
         ttk.Label(prompt, text=f"Wie viele der {num_due_tasks} fälligen Karten möchtest du lernen?", padding=15).pack()
 
-        slider_var = tk.IntVar(value=min(10, num_due_tasks))
+        slider_var = tk.IntVar(value=min(20, num_due_tasks)) # Standardwert 20 oder Maximum
 
         value_frame = ttk.Frame(prompt, padding=(0,0,0,10))
         value_frame.pack()
-
         value_label = ttk.Label(value_frame, text=f"{slider_var.get()}", font=("Helvetica", 14, "bold"))
         value_label.pack()
 
@@ -119,6 +127,7 @@ class StatisticsFrame(ttk.Frame):
 
         slider = ttk.Scale(prompt, from_=1, to=num_due_tasks, variable=slider_var, command=update_label, orient='horizontal')
         slider.pack(fill='x', expand=True, padx=20)
+        if num_due_tasks == 1: slider.config(state="disabled") # Deaktiviert Slider bei nur einer Karte
 
         btn_frame = ttk.Frame(prompt, padding=10)
         btn_frame.pack()
@@ -147,7 +156,6 @@ class StatisticsFrame(ttk.Frame):
 
         self.create_plots(self.plot_container, self.tasks)
 
-
     def _reset_set_progress(self):
         """Setzt den Fortschritt für das gesamte aktuell angezeigte Set zurück."""
         set_name = self.controller.data[self.subject_id]["sets"][self.set_id]["name"]
@@ -160,30 +168,39 @@ class StatisticsFrame(ttk.Frame):
                 task['sm_data']['next_review_at'] = now
                 task['sm_data']['consecutive_good'] = 0
             self.controller.data_manager.save_data(self.controller.data)
-            self.update_plots()
+            self.update_plots() # Zeichnet die Diagramme neu
 
     def create_plots(self, parent, tasks):
         """Erstellt die Matplotlib-Diagramme und bettet sie in Tkinter ein."""
         theme = constants.THEMES[self.controller.current_theme.get()]
+        theme_name = self.controller.current_theme.get()
         text_color = theme['fg']
-        plt.style.use('seaborn-v0_8-darkgrid' if self.controller.current_theme.get() == 'dark' else 'seaborn-v0_8-whitegrid')
+
+        plt.style.use('seaborn-v0_8-darkgrid' if theme_name == 'dark' else 'seaborn-v0_8-whitegrid')
 
         status_counts = Counter(t.get('sm_data', {}).get('status', 'new') for t in tasks)
         labels = list(status_counts.keys())
         sizes = list(status_counts.values())
-        colors = [constants.STATUS_COLORS.get(status, 'grey') for status in labels]
+        pie_colors = [constants.STATUS_COLORS.get(status, 'grey') for status in labels]
 
-        self.fig = plt.figure(figsize=(12, 6), facecolor=theme['bg'])
-
+        self.fig = Figure(figsize=(12, 6), facecolor=theme['bg'])
         gs = self.fig.add_gridspec(1, 2, width_ratios=[1, 1.5])
         ax1 = self.fig.add_subplot(gs[0])
         ax2 = self.fig.add_subplot(gs[1])
 
-        ax1.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%',
-                startangle=90, textprops={'color': text_color})
+        # --- Kuchendiagramm: Lernstatus ---
+        # Erstellt das Diagramm und erhält Referenzen auf die Text-Objekte
+        patches, texts, autotexts = ax1.pie(sizes, labels=labels, colors=pie_colors,
+                                           autopct='%1.1f%%', startangle=90)
+
+        # KORREKTUR: Setzt die Farben für äußere und innere Beschriftungen getrennt
+        plt.setp(texts, color=text_color) # Äußere Labels (new, ok, etc.)
+        plt.setp(autotexts, color='black', weight='bold') # Innere Prozentzahlen
+
         ax1.axis('equal')
         ax1.set_title('Aktueller Lernstatus', color=text_color)
 
+        # --- Liniendiagramm: Lernverlauf ---
         history_data = []
         for task in tasks:
             history_data.extend(task.get('history', []))
@@ -200,8 +217,7 @@ class StatisticsFrame(ttk.Frame):
             ax2.set_ylabel('Bewertungsqualität', color=text_color)
             ax2.tick_params(axis='y', colors=text_color)
             ax2.tick_params(axis='x', colors=text_color)
-            for spine in ax2.spines.values():
-                spine.set_color(text_color)
+            for spine in ax2.spines.values(): spine.set_color(text_color)
             ax2.set_yticks(list(quality_map.values()), labels=list(quality_map.keys()))
             ax2.xaxis.set_major_locator(MaxNLocator(integer=True))
         else:
@@ -209,11 +225,9 @@ class StatisticsFrame(ttk.Frame):
             ax2.set_yticks([])
             ax2.set_xticks([])
             ax2.set_facecolor(theme['bg'])
-            for spine in ax2.spines.values():
-                spine.set_visible(False)
+            for spine in ax2.spines.values(): spine.set_visible(False)
 
         ax2.set_title("Fortschritt über die Zeit", color=text_color)
-
         self.fig.tight_layout(pad=3.0)
 
         canvas = FigureCanvasTkAgg(self.fig, parent)
