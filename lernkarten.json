@@ -284,11 +284,20 @@
                             }
                         ],
                         "id": "6fdee785-0462-4617-814c-56d61c15f826",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751212425.9074082,
+                                "quality": "good"
+                            },
+                            {
+                                "timestamp": 1751212430.8954313,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751183433.003003,
+                            "status": "mastered",
+                            "next_review_at": 1751817230.89544,
                             "consecutive_good": 0
                         }
                     },
@@ -329,13 +338,22 @@
                             }
                         ],
                         "id": "bc940b5c-3960-4288-b831-cf2e990a7a21",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751212428.9904478,
+                                "quality": "good"
+                            },
+                            {
+                                "timestamp": 1751212432.5154667,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "bilder_aufgabe": [],
                         "sm_data": {
                             "level": 2,
-                            "next_review_at": 1751183433.003003,
-                            "status": "new",
+                            "next_review_at": 1751817232.515472,
+                            "status": "mastered",
                             "consecutive_good": 0
                         }
                     },
@@ -352,11 +370,20 @@
                             }
                         ],
                         "id": "4be4d3af-eb6f-4455-8519-591346a57cbf",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751212429.9654427,
+                                "quality": "good"
+                            },
+                            {
+                                "timestamp": 1751212433.5584395,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751183433.003003,
+                            "status": "mastered",
+                            "next_review_at": 1751817233.558444,
                             "consecutive_good": 0
                         }
                     }
@@ -792,7 +819,8 @@
                         "beschreibung": "Von einem HS/MS-Transformator (ONAN gekuehlt) sind folgende Daten bekannt:",
                         "tags": [],
                         "bilder_aufgabe": [
-                            null
+                            null,
+                            "images/1751212550_376_Bildschirmfoto_20250629_175547.png"
                         ],
                         "unteraufgaben": [
                             {
@@ -812,7 +840,9 @@
                             {
                                 "frage": "Berechnen Sie den thermischen Widerstand R_th im Auslegungspunkt.",
                                 "loesung": "",
-                                "bilder_loesung": []
+                                "bilder_loesung": [
+                                    "images/1751212588_752_Bildschirmfoto_20250629_175621.png"
+                                ]
                             },
                             {
                                 "frage": "Bestimmen Sie die thermische Zeitkonstante tau_th.",
@@ -837,11 +867,15 @@
                             }
                         ],
                         "id": "a8035189-f3f5-4f77-bae4-34e8db4307b6",
-                        "history": [],
-                        "rating": 0,
+                        "history": [
+                            {
+                                "timestamp": 1751213705.0644877,
+                                "quality": "perfect"
+                            }
+                        ],
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751106326.1692123
+                            "status": "perfect",
+                            "next_review_at": 1753805705.064501
                         }
                     },
                     {
@@ -875,11 +909,17 @@
                             }
                         ],
                         "id": "c1b20fa5-7857-4fee-8215-365ad9454b7a",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751215769.9941788,
+                                "quality": "bad"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751106326.1692123
+                            "status": "bad",
+                            "next_review_at": 1751215769.994195,
+                            "consecutive_good": 0
                         }
                     },
                     {
@@ -934,11 +974,17 @@
                             }
                         ],
                         "id": "8e879224-4e51-4e12-a242-5433dda44b89",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751219469.3179765,
+                                "quality": "bad"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751106326.1692123
+                            "status": "bad",
+                            "next_review_at": 1751219469.317995,
+                            "consecutive_good": 0
                         }
                     },
                     {
