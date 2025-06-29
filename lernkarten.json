@@ -1,6 +1,6 @@
 {
     "settings": {
-        "theme": "dark",
+        "theme": "light",
         "data_version": 2
     },
     "62cf73e2-7022-4d83-8081-65a46fa0158a": {
@@ -49,11 +49,16 @@
                             }
                         ],
                         "id": "3b4184e2-ed4f-487b-bb27-0c510001ba58",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751184386.47545,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751183433.003003,
+                            "status": "good",
+                            "next_review_at": 1751443586.47548,
                             "consecutive_good": 0
                         }
                     },
@@ -530,17 +535,21 @@
                             {
                                 "timestamp": 1751143026.6757262,
                                 "quality": "bad"
+                            },
+                            {
+                                "timestamp": 1751186229.8509772,
+                                "quality": "good"
                             }
                         ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "bad",
-                            "next_review_at": 1751143026.675735,
+                            "status": "good",
+                            "next_review_at": 1751445429.850993,
                             "consecutive_good": 0
                         }
                     },
                     {
-                        "name": "Aufgabe 4: Netzberechnung SS 2019",
+                        "name": "Aufgabe 4: Netzberechnung (SS 2019)",
                         "beschreibung": "Zur Auslegung eines Niederspannungsabganges wird die Worst-Case-Situation, \"maximale Einspeisung bei minimaler Last\" zum Zeitpunkt der maximalen Einspeisung betrachtet. Von der Sammelschiene (0) geht eine l = 0,8 km lange 400-V-Niederspannungsleitung vom Typ 4x150 mm^2 ab (R' = 0,206 Ohm/km, X' = 0,084 Ohm/km). In der Mitte der Leitung (l_01 = 400 m) wird die minimale Last aller Kunden mit S_1 = 150 kVA, lambda_1 = 0,95 (ind.) als Punktlast (dreiphasig) modelliert. Am Ende der Leitung werden die vorhandenen Photovoltaikanlagen als Punkteinspeiser mit S_2 = 100 kVA, lambda_2 = 1 (dreiphasig) dargestellt.",
                         "tags": [],
                         "bilder_aufgabe": [
@@ -574,17 +583,21 @@
                             {
                                 "timestamp": 1751142909.8646474,
                                 "quality": "bad"
+                            },
+                            {
+                                "timestamp": 1751187729.5804234,
+                                "quality": "perfect"
                             }
                         ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "bad",
-                            "next_review_at": 1751142909.864658,
+                            "status": "perfect",
+                            "next_review_at": 1753779729.580439,
                             "consecutive_good": 0
                         }
                     },
                     {
-                        "name": "Aufgabe 5: Zustandsschaetzung (14 Punkte)",
+                        "name": "Aufgabe 5: Zustandsschaetzung (SS 2019)",
                         "beschreibung": "Betrachtet wird die Parallelschaltung zweier ohmscher Widerstaende. Die Widerstaende sind mit R_1 = 20 Ohm und R_2 = 5 Ohm gegeben. Ferner werden die folgenden Werte gemessen: I^m = 2,4 A und I_1^m = 0,55 A. Anhand der Messwerte soll die Gesamtspannung U geschaetzt werden.",
                         "tags": [],
                         "bilder_aufgabe": [
@@ -626,11 +639,16 @@
                             }
                         ],
                         "id": "00a2525c-dfe1-428d-87ef-3f4cd8baaaaf",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751189845.535928,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751051002.0181324,
+                            "status": "good",
+                            "next_review_at": 1751449045.535938,
                             "consecutive_good": 0
                         }
                     },
@@ -641,11 +659,16 @@
                         "bilder_aufgabe": [],
                         "unteraufgaben": [],
                         "id": "10e34278-01db-46e5-a93a-2e53ecd0cd24",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751197609.602391,
+                                "quality": "perfect"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751051002.0181324,
+                            "status": "perfect",
+                            "next_review_at": 1753789609.602402,
                             "consecutive_good": 0
                         }
                     },
@@ -673,11 +696,16 @@
                             }
                         ],
                         "id": "6c637b44-19e9-4e9e-ab9d-c940c12db184",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751199599.4645417,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751100533.437861
+                            "status": "good",
+                            "next_review_at": 1751458799.464557
                         }
                     },
                     {
@@ -718,11 +746,16 @@
                             }
                         ],
                         "id": "cbc730aa-3deb-4343-9b8d-97afb76e535b",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751201645.722767,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751106326.1692123
+                            "status": "good",
+                            "next_review_at": 1751460845.722778
                         }
                     },
                     {
