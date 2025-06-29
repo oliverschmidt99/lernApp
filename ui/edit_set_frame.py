@@ -7,7 +7,7 @@ import copy
 from collections import deque
 
 from tkinterdnd2 import DND_FILES
-from PIL import Image, ImageGrab
+from PIL import Image, ImageTk
 
 from .base_frames import BasePage
 import utils
@@ -145,7 +145,45 @@ class BaseTaskEditor(ttk.Frame):
         self.subtask_widgets.append(widgets)
 
         self._redraw_solution_images_ui(widgets)
-        utils.bind_mouse_scroll(frame, self.edit_set_frame.editor_canvas)
+
+    def _show_image_popup(self, path):
+        """Öffnet ein Popup-Fenster, um ein Bild anzuzeigen."""
+        if not path or not os.path.exists(path):
+            messagebox.showwarning("Fehler", "Bildpfad ist ungültig oder die Datei existiert nicht.")
+            return
+
+        popup = tk.Toplevel(self)
+        popup.title(os.path.basename(path))
+        colors = constants.THEMES[self.controller.current_theme.get()]
+        popup.configure(bg=colors['bg'])
+
+        popup.bind("<Escape>", lambda e: popup.destroy())
+
+        close_button = ttk.Button(popup, text="X", command=popup.destroy, style="Danger.TButton")
+        close_button.pack(anchor="ne", padx=10, pady=10)
+
+        try:
+            img = Image.open(path)
+            screen_width = self.winfo_screenwidth() * 0.8
+            screen_height = self.winfo_screenheight() * 0.8
+            img.thumbnail((screen_width, screen_height), Image.Resampling.LANCZOS)
+            photo = ImageTk.PhotoImage(img)
+
+            img_label_popup = ttk.Label(popup, image=photo)
+            img_label_popup.image = photo
+            img_label_popup.pack(padx=20, pady=(0, 20), expand=True, fill="both")
+
+            popup.update_idletasks()
+            x = self.winfo_toplevel().winfo_x() + (self.winfo_toplevel().winfo_width() // 2) - (popup.winfo_width() // 2)
+            y = self.winfo_toplevel().winfo_y() + (self.winfo_toplevel().winfo_height() // 2) - (popup.winfo_height() // 2)
+            popup.geometry(f"+{int(x)}+{int(y)}")
+
+        except Exception as e:
+            popup.destroy()
+            messagebox.showerror("Fehler", f"Bild konnte nicht geladen werden:\n{e}")
+
+        popup.transient(self.winfo_toplevel())
+        popup.grab_set()
 
     def _redraw_task_images_ui(self):
         for widget in self.task_images_frame.winfo_children(): widget.destroy()
@@ -153,7 +191,10 @@ class BaseTaskEditor(ttk.Frame):
             f = ttk.Frame(self.task_images_frame)
             f.pack(fill='x', pady=2)
             ttk.Button(f, text="X", width=2, command=lambda p=path: self._remove_task_image(p)).pack(side='right')
-            ttk.Label(f, text=f"{i+1}: {os.path.basename(path)}").pack(side='left')
+            # KORREKTUR: Label ist jetzt klickbar
+            label = ttk.Label(f, text=f"{i+1}: {os.path.basename(path)}", cursor="hand2")
+            label.pack(side='left')
+            label.bind("<Button-1>", lambda e, p=path: self._show_image_popup(p))
 
     def _redraw_solution_images_ui(self, widget_dict):
         frame = widget_dict['image_frame']
@@ -162,7 +203,10 @@ class BaseTaskEditor(ttk.Frame):
             f = ttk.Frame(frame)
             f.pack(fill='x', pady=2)
             ttk.Button(f, text="X", width=2, command=lambda p=path, w=widget_dict: self._remove_solution_image(p, w)).pack(side='right')
-            ttk.Label(f, text=f"{i+1}: {os.path.basename(path)}").pack(side='left')
+            # KORREKTUR: Label ist jetzt klickbar
+            label = ttk.Label(f, text=f"{i+1}: {os.path.basename(path)}", cursor="hand2")
+            label.pack(side='left')
+            label.bind("<Button-1>", lambda e, p=path: self._show_image_popup(p))
 
     def _delete_subtask(self, widget_dict_to_delete):
         widget_dict_to_delete['frame'].destroy()
@@ -373,10 +417,13 @@ class EditSetFrame(BasePage):
             self._is_undo_redo_action = False
 
             super().__init__(parent, controller, subject_id, set_id)
-            self._load_data_into_widgets(self.task_data)
-            initial_state = self.collect_data()
-            if initial_state:
-                self._push_undo_state(initial_state)
+            if self.task_data:
+                self._load_data_into_widgets(self.task_data)
+                initial_state = self.collect_data()
+                if initial_state:
+                    self._push_undo_state(initial_state)
+            else:
+                self.add_subtask_fields()
 
         def _load_data_into_widgets(self, data):
             """Befüllt den Editor mit Daten."""

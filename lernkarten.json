@@ -49,26 +49,11 @@
                             }
                         ],
                         "id": "3b4184e2-ed4f-487b-bb27-0c510001ba58",
-                        "history": [
-                            {
-                                "timestamp": 1750967932.6220236,
-                                "time_taken": 0,
-                                "correct": 1,
-                                "total": 1,
-                                "quality": "ok"
-                            },
-                            {
-                                "timestamp": 1750967947.0517704,
-                                "time_taken": 0,
-                                "correct": 1,
-                                "total": 1,
-                                "quality": "good"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "good",
-                            "next_review_at": 1751227147.05178,
+                            "status": "new",
+                            "next_review_at": 1751183433.003003,
                             "consecutive_good": 0
                         }
                     },
@@ -96,26 +81,11 @@
                             }
                         ],
                         "id": "653934cd-7cfb-43e7-a0cb-8981d93a8ef9",
-                        "history": [
-                            {
-                                "timestamp": 1750967935.1120698,
-                                "time_taken": 0,
-                                "correct": 0,
-                                "total": 1,
-                                "quality": "bad"
-                            },
-                            {
-                                "timestamp": 1750967941.5987508,
-                                "time_taken": 0,
-                                "correct": 1,
-                                "total": 1,
-                                "quality": "good"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "good",
-                            "next_review_at": 1751227141.598763,
+                            "status": "new",
+                            "next_review_at": 1751183433.003003,
                             "consecutive_good": 0
                         }
                     },
@@ -136,28 +106,13 @@
                             }
                         ],
                         "id": "a5efee05-258a-4772-99ab-5ae3c75407cf",
-                        "history": [
-                            {
-                                "timestamp": 1750967937.1667178,
-                                "time_taken": 0,
-                                "correct": 1,
-                                "total": 1,
-                                "quality": "good"
-                            },
-                            {
-                                "timestamp": 1750967948.866976,
-                                "time_taken": 0,
-                                "correct": 1,
-                                "total": 1,
-                                "quality": "good"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "bilder_aufgabe": [],
                         "sm_data": {
                             "level": 0,
-                            "next_review_at": 1751572748.866985,
-                            "status": "mastered",
+                            "next_review_at": 1751183433.003003,
+                            "status": "new",
                             "consecutive_good": 0
                         }
                     },
@@ -179,19 +134,11 @@
                             }
                         ],
                         "id": "948eda62-1569-4a83-9735-d3bdc69f2f93",
-                        "history": [
-                            {
-                                "timestamp": 1750967939.3338022,
-                                "time_taken": 0,
-                                "correct": 1,
-                                "total": 1,
-                                "quality": "perfect"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "perfect",
-                            "next_review_at": 1753559939.333813,
+                            "status": "new",
+                            "next_review_at": 1751183433.003003,
                             "consecutive_good": 0
                         }
                     },
@@ -213,19 +160,11 @@
                             }
                         ],
                         "id": "f50fc00b-6de4-4f6d-bbc4-98427a756977",
-                        "history": [
-                            {
-                                "timestamp": 1750967944.4866202,
-                                "time_taken": 0,
-                                "correct": 1,
-                                "total": 1,
-                                "quality": "ok"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "ok",
-                            "next_review_at": 1751054344.486638,
+                            "status": "new",
+                            "next_review_at": 1751183433.003003,
                             "consecutive_good": 0
                         }
                     },
@@ -273,7 +212,7 @@
                         "rating": 0,
                         "sm_data": {
                             "status": "new",
-                            "next_review_at": 1750967891.340119,
+                            "next_review_at": 1751183433.003003,
                             "consecutive_good": 0
                         }
                     },
@@ -315,7 +254,7 @@
                         "rating": 0,
                         "sm_data": {
                             "status": "new",
-                            "next_review_at": 1750967891.340119,
+                            "next_review_at": 1751183433.003003,
                             "consecutive_good": 0
                         }
                     },
@@ -361,7 +300,7 @@
                         "bilder_aufgabe": [],
                         "sm_data": {
                             "level": 2,
-                            "next_review_at": 1750967891.340119,
+                            "next_review_at": 1751183433.003003,
                             "status": "new",
                             "consecutive_good": 0
                         }
@@ -383,7 +322,7 @@
                         "rating": 0,
                         "sm_data": {
                             "status": "new",
-                            "next_review_at": 1750967891.340119,
+                            "next_review_at": 1751183433.003003,
                             "consecutive_good": 0
                         }
                     }

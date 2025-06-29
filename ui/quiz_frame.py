@@ -129,7 +129,8 @@ class ImageGallery(ttk.Frame):
             img = Image.open(path)
             screen_width = self.winfo_screenwidth() * 0.8
             screen_height = self.winfo_screenheight() * 0.8
-            img.thumbnail((screen_width, screen_height))
+            img.thumbnail((screen_width, screen_height), Image.Resampling.LANCZOS)
+
             photo = ImageTk.PhotoImage(img)
 
             img_label_popup = ttk.Label(popup, image=photo)
@@ -153,7 +154,7 @@ class ImageGallery(ttk.Frame):
         path = self.image_paths[self.current_image_index]
         try:
             img = Image.open(path)
-            img.thumbnail((450, 450))
+            img.thumbnail((450, 450), Image.Resampling.LANCZOS)
             photo = ImageTk.PhotoImage(img)
             self._photo_references.append(photo)
             self.image_label.config(image=photo)
@@ -273,7 +274,6 @@ class QuizFrame(BasePage):
         for widget in self.content_frame.winfo_children(): widget.destroy()
         if not self.current_task: return
 
-        self.solution_peeked = False
         colors = constants.THEMES[self.controller.current_theme.get()]
 
         mastered_tasks = [t for t in self.all_tasks if t.get('sm_data', {}).get('status') in ['mastered', 'perfect']]
@@ -346,10 +346,6 @@ class QuizFrame(BasePage):
             widgets["container"].destroy()
             widgets["container"] = None
         else:
-            self.solution_peeked = True
-            self.good_button.config(state="disabled")
-            self.perfect_button.config(state="disabled")
-
             container = ttk.LabelFrame(parent_frame, text="Lösung")
             container.pack(fill="x", pady=5)
             image_paths_solution = subtask.get('bilder_loesung', [])
@@ -404,6 +400,7 @@ class QuizFrame(BasePage):
                 break
 
     def save_performance(self, quality):
+        """Speichert die Leistung für die allgemeine Statistik."""
         if not self.current_task or not self.current_task.get('id'): return
 
         for task in self.all_tasks:

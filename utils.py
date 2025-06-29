@@ -14,7 +14,7 @@ def render_latex(formula, fontsize=12, dpi=300, fg='black', bg='white'):
         formula = formula.replace('\\le', '\\leq').replace('\\ge', '\\geq').replace('\\implies', '\\Rightarrow').replace('\\text', '\\mathrm')
         fig = Figure(figsize=(4, 1), dpi=dpi, facecolor=bg)
         fig.text(0, 0, f"${formula}$", usetex=False, fontsize=fontsize, color=fg)
-        
+
         buf = io.BytesIO()
         fig.savefig(buf, format='png', transparent=False, bbox_inches='tight', pad_inches=0.05, facecolor=bg)
         plt.close(fig)
@@ -39,7 +39,7 @@ def get_readable_text_color(hex_bg_color):
 
 def bind_mouse_scroll(widget_to_bind, canvas_to_scroll):
     """
-    Bindet das Mausrad-Event zuverlässig an ein Widget und alle seine Kinder, 
+    Bindet das Mausrad-Event zuverlässig an ein Widget und alle seine Kinder,
     um einen bestimmten Canvas zu scrollen. Verhindert doppelte Bindungen.
     """
     def _on_mousewheel(event):
@@ -47,7 +47,7 @@ def bind_mouse_scroll(widget_to_bind, canvas_to_scroll):
             canvas_to_scroll.yview_scroll(1, "units")
         elif event.num == 4 or event.delta > 0:
             canvas_to_scroll.yview_scroll(-1, "units")
-    
+
     # KORREKTUR: Prüft, ob das Widget bereits gebunden wurde.
     if widget_to_bind not in _already_bound:
         widget_to_bind.bind("<MouseWheel>", _on_mousewheel)
