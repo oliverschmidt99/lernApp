@@ -1,6 +1,6 @@
 {
     "settings": {
-        "theme": "dark",
+        "theme": "light",
         "data_version": 2
     },
     "62cf73e2-7022-4d83-8081-65a46fa0158a": {
@@ -1010,11 +1010,16 @@
                             }
                         ],
                         "id": "53bc983f-7872-4af0-8b7b-0639d3abafdc",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751300712.138656,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751136452.5209188
+                            "status": "good",
+                            "next_review_at": 1751559912.138701
                         }
                     },
                     {
