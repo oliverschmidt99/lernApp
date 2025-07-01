@@ -49,16 +49,11 @@
                             }
                         ],
                         "id": "3b4184e2-ed4f-487b-bb27-0c510001ba58",
-                        "history": [
-                            {
-                                "timestamp": 1751184386.47545,
-                                "quality": "good"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "good",
-                            "next_review_at": 1751443586.47548,
+                            "status": "new",
+                            "next_review_at": 1751294739.1713626,
                             "consecutive_good": 0
                         }
                     },
@@ -86,16 +81,11 @@
                             }
                         ],
                         "id": "653934cd-7cfb-43e7-a0cb-8981d93a8ef9",
-                        "history": [
-                            {
-                                "timestamp": 1751210230.3181002,
-                                "quality": "ok"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "ok",
-                            "next_review_at": 1751296630.318117,
+                            "status": "new",
+                            "next_review_at": 1751294739.1713626,
                             "consecutive_good": 0
                         }
                     },
@@ -116,18 +106,13 @@
                             }
                         ],
                         "id": "a5efee05-258a-4772-99ab-5ae3c75407cf",
-                        "history": [
-                            {
-                                "timestamp": 1751210231.496096,
-                                "quality": "good"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "bilder_aufgabe": [],
                         "sm_data": {
                             "level": 0,
-                            "next_review_at": 1751469431.496103,
-                            "status": "good",
+                            "next_review_at": 1751294739.1713626,
+                            "status": "new",
                             "consecutive_good": 0
                         }
                     },
@@ -149,20 +134,11 @@
                             }
                         ],
                         "id": "948eda62-1569-4a83-9735-d3bdc69f2f93",
-                        "history": [
-                            {
-                                "timestamp": 1751210232.493133,
-                                "quality": "bad"
-                            },
-                            {
-                                "timestamp": 1751211286.2416923,
-                                "quality": "ok"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "ok",
-                            "next_review_at": 1751297686.241707,
+                            "status": "new",
+                            "next_review_at": 1751294739.1713626,
                             "consecutive_good": 0
                         }
                     },
@@ -184,16 +160,11 @@
                             }
                         ],
                         "id": "f50fc00b-6de4-4f6d-bbc4-98427a756977",
-                        "history": [
-                            {
-                                "timestamp": 1751210233.25832,
-                                "quality": "good"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "good",
-                            "next_review_at": 1751469433.258324,
+                            "status": "new",
+                            "next_review_at": 1751294739.1713626,
                             "consecutive_good": 0
                         }
                     },
@@ -237,16 +208,11 @@
                             }
                         ],
                         "id": "64040646-5e2c-4a79-8d8b-096084a8614d",
-                        "history": [
-                            {
-                                "timestamp": 1751211588.1287699,
-                                "quality": "perfect"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "perfect",
-                            "next_review_at": 1753803588.128785,
+                            "status": "new",
+                            "next_review_at": 1751294739.1713626,
                             "consecutive_good": 0
                         }
                     },
@@ -284,20 +250,11 @@
                             }
                         ],
                         "id": "6fdee785-0462-4617-814c-56d61c15f826",
-                        "history": [
-                            {
-                                "timestamp": 1751212425.9074082,
-                                "quality": "good"
-                            },
-                            {
-                                "timestamp": 1751212430.8954313,
-                                "quality": "good"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "mastered",
-                            "next_review_at": 1751817230.89544,
+                            "status": "new",
+                            "next_review_at": 1751294739.1713626,
                             "consecutive_good": 0
                         }
                     },
@@ -338,22 +295,13 @@
                             }
                         ],
                         "id": "bc940b5c-3960-4288-b831-cf2e990a7a21",
-                        "history": [
-                            {
-                                "timestamp": 1751212428.9904478,
-                                "quality": "good"
-                            },
-                            {
-                                "timestamp": 1751212432.5154667,
-                                "quality": "good"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "bilder_aufgabe": [],
                         "sm_data": {
                             "level": 2,
-                            "next_review_at": 1751817232.515472,
-                            "status": "mastered",
+                            "next_review_at": 1751294739.1713626,
+                            "status": "new",
                             "consecutive_good": 0
                         }
                     },
@@ -370,20 +318,11 @@
                             }
                         ],
                         "id": "4be4d3af-eb6f-4455-8519-591346a57cbf",
-                        "history": [
-                            {
-                                "timestamp": 1751212429.9654427,
-                                "quality": "good"
-                            },
-                            {
-                                "timestamp": 1751212433.5584395,
-                                "quality": "good"
-                            }
-                        ],
+                        "history": [],
                         "rating": 0,
                         "sm_data": {
-                            "status": "mastered",
-                            "next_review_at": 1751817233.558444,
+                            "status": "new",
+                            "next_review_at": 1751294739.1713626,
                             "consecutive_good": 0
                         }
                     }
@@ -657,7 +596,7 @@
                         "beschreibung": "Betrachtet wird die Parallelschaltung zweier ohmscher Widerstaende. Die Widerstaende sind mit R_1 = 20 Ohm und R_2 = 5 Ohm gegeben. Ferner werden die folgenden Werte gemessen: I^m = 2,4 A und I_1^m = 0,55 A. Anhand der Messwerte soll die Gesamtspannung U geschaetzt werden.",
                         "tags": [],
                         "bilder_aufgabe": [
-                            "images/1751050035_463_Bildschirmfoto_20250627_204642.png"
+                            "images/1751288261_519_Bildschirmfoto_20250630_145720.png"
                         ],
                         "unteraufgaben": [
                             {
@@ -701,7 +640,6 @@
                                 "quality": "good"
                             }
                         ],
-                        "rating": 0,
                         "sm_data": {
                             "status": "good",
                             "next_review_at": 1751449045.535938,
@@ -770,7 +708,9 @@
                         "tags": [
                             "SS – 2020"
                         ],
-                        "bilder_aufgabe": [],
+                        "bilder_aufgabe": [
+                            "images/1751288301_504_Bildschirmfoto_20250630_145803.png"
+                        ],
                         "unteraufgaben": [
                             {
                                 "frage": "Zeichnen Sie das einphasige Ersatzschaltbild, beschriften Sie es vollstaendig und bestimmen Sie die Leitungsparameter.",
@@ -808,7 +748,6 @@
                                 "quality": "good"
                             }
                         ],
-                        "rating": 0,
                         "sm_data": {
                             "status": "good",
                             "next_review_at": 1751460845.722778
@@ -913,12 +852,16 @@
                             {
                                 "timestamp": 1751215769.9941788,
                                 "quality": "bad"
+                            },
+                            {
+                                "timestamp": 1751276089.5285182,
+                                "quality": "ok"
                             }
                         ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "bad",
-                            "next_review_at": 1751215769.994195,
+                            "status": "ok",
+                            "next_review_at": 1751362489.528563,
                             "consecutive_good": 0
                         }
                     },
@@ -978,12 +921,20 @@
                             {
                                 "timestamp": 1751219469.3179765,
                                 "quality": "bad"
+                            },
+                            {
+                                "timestamp": 1751283357.5376434,
+                                "quality": "bad"
+                            },
+                            {
+                                "timestamp": 1751291790.5614974,
+                                "quality": "good"
                             }
                         ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "bad",
-                            "next_review_at": 1751219469.317995,
+                            "status": "good",
+                            "next_review_at": 1751550990.561666,
                             "consecutive_good": 0
                         }
                     },
@@ -1009,11 +960,16 @@
                             }
                         ],
                         "id": "51ec2a2a-52fc-4ac2-85ed-947d85042b2a",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751287818.769275,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751136452.5209188
+                            "status": "good",
+                            "next_review_at": 1751547018.769309
                         }
                     },
                     {
