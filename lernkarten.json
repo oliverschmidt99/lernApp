@@ -1074,11 +1074,21 @@
                             }
                         ],
                         "id": "e38ff189-aa55-4cb6-93fc-b5a3756feee4",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751360632.5279257,
+                                "quality": "bad"
+                            },
+                            {
+                                "timestamp": 1751371462.0932646,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751136452.5209188
+                            "status": "good",
+                            "next_review_at": 1751630662.093301,
+                            "consecutive_good": 0
                         }
                     },
                     {
@@ -1103,11 +1113,21 @@
                             }
                         ],
                         "id": "b2a97a04-a536-4d24-949a-91cf799a67d6",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751362451.191823,
+                                "quality": "bad"
+                            },
+                            {
+                                "timestamp": 1751384457.2986777,
+                                "quality": "good"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751136452.5209188
+                            "status": "good",
+                            "next_review_at": 1751643657.298719,
+                            "consecutive_good": 0
                         }
                     },
                     {
@@ -1162,11 +1182,17 @@
                             }
                         ],
                         "id": "bac2d06d-38b6-4d57-b733-b91a8df1df1c",
-                        "history": [],
+                        "history": [
+                            {
+                                "timestamp": 1751364191.6718621,
+                                "quality": "bad"
+                            }
+                        ],
                         "rating": 0,
                         "sm_data": {
-                            "status": "new",
-                            "next_review_at": 1751136452.5209188
+                            "status": "bad",
+                            "next_review_at": 1751364191.6719,
+                            "consecutive_good": 0
                         }
                     },
                     {
